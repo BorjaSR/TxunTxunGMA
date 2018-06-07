@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "998929560649",
+    "firebase_url": "https://txun-txun-gma.firebaseio.com",
+    "project_id": "txun-txun-gma",
+    "storage_bucket": "txun-txun-gma.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998929560649:android:cf8098873542ee64",
+        "android_client_info": {
+          "package_name": "es.bsalazar.txuntxungma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998929560649-sgcmkijmirl9j76l60nhntc2luj5pasb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.bsalazar.txuntxungma",
+            "certificate_hash": "75cb014f724711abe671f0f42ce2de3efbc3b444"
+          }
+        },
+        {
+          "client_id": "998929560649-98bujf4m7qknkkpnhdtdr8gj745arngl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "998929560649-98bujf4m7qknkkpnhdtdr8gj745arngl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzwPNxju6ZOeh6Xh0xlDOcQMNq4Vxp_hA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998929560649-98bujf4m7qknkkpnhdtdr8gj745arngl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

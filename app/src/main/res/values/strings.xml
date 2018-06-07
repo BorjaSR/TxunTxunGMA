@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Txun Txun GMA</string>
+    <string name="title_activity_login">Inicia sesión</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="sign_in">Iniciar sesión</string>
+
+    <!-- Strings related to login -->
+</resources>
