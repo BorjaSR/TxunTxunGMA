@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package es.bsalazar.secretcafe.domain.threading;
+package es.bsalazar.txuntxungma.domain.threading;
 
 import android.os.Handler;
 

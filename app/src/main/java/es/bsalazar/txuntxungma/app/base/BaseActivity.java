@@ -18,8 +18,11 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutID());
+        setContentView(getView());
         unbinder = ButterKnife.bind(this);
+
+        viewModel = setupViewModel();
+        observeViewModel();
     }
 
     @Override
@@ -28,7 +31,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
         unbinder.unbind();
     }
 
-    public abstract int getLayoutID();
+    public abstract int getView();
 
     public abstract T setupViewModel();
 

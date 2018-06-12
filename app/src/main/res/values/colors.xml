@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#162394</color>
     <color name="colorPrimaryDark">#0f1973</color>
+    <color name="colorPrimary">#162394</color>
+    <color name="colorPrimaryL">#2736b9</color>
+    <color name="colorPrimaryLight">#5079de</color>
     <color name="colorAccent">#94b3ff</color>
 
     <color name="white">#fff</color>
@@ -10,5 +12,6 @@
     <color name="black">#000</color>
 
     <color name="alpha_white">#8fff</color>
+    <color name="alpha_white_for_background_image">#9fffffff</color>
     <color name="alpha_charcoal">#88434343</color>
 </resources>

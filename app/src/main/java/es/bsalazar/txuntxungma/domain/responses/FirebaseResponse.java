@@ -1,4 +1,4 @@
-package es.bsalazar.txuntxungma.data;
+package es.bsalazar.txuntxungma.domain.responses;
 
 public class FirebaseResponse<T> {
     private int index;

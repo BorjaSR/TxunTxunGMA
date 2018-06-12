@@ -1,4 +1,4 @@
-package es.bsalazar.txuntxungma.data;
+package es.bsalazar.txuntxungma.data.remote;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
