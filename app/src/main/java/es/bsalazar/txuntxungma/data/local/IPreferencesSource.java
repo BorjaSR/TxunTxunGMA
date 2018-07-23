@@ -7,4 +7,6 @@ public interface IPreferencesSource {
     boolean saveLoginData(Auth auth);
 
     Auth getLoginData();
+
+    boolean removeLoginData();
 }

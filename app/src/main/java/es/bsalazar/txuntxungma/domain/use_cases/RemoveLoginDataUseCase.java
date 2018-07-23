@@ -7,20 +7,20 @@ import es.bsalazar.txuntxungma.domain.entities.DataCallback;
 import es.bsalazar.txuntxungma.domain.threading.UseCase;
 
 
-public class GetLoginDataUseCase extends UseCase<GetLoginDataUseCase.RequestValues, GetLoginDataUseCase.ResponseValue> {
+public class RemoveLoginDataUseCase extends UseCase<RemoveLoginDataUseCase.RequestValues, RemoveLoginDataUseCase.ResponseValue> {
 
     private final DataProvider dataProvider;
 
-    public GetLoginDataUseCase(DataProvider dataProvider) {
+    public RemoveLoginDataUseCase(DataProvider dataProvider) {
         this.dataProvider = dataProvider;
     }
 
     @Override
     protected void executeUseCase(RequestValues requestValues) {
-        dataProvider.getLoginData(new DataCallback<Auth, BaseError>() {
+        dataProvider.removeLoginData(new DataCallback<Boolean, BaseError>() {
             @Override
-            public void onSuccess(Auth result) {
-                getUseCaseCallback().onSuccess(new ResponseValue(result));
+            public void onSuccess(Boolean result) {
+                getUseCaseCallback().onSuccess(new ResponseValue());
             }
 
             @Override
@@ -32,17 +32,6 @@ public class GetLoginDataUseCase extends UseCase<GetLoginDataUseCase.RequestValu
 
     public static final class RequestValues implements UseCase.RequestValues {}
 
-    public static final class ResponseValue implements UseCase.ResponseValue {
-
-        private final Auth auth;
-
-        ResponseValue(Auth auth) {
-            this.auth = auth;
-        }
-
-        public Auth getAuth() {
-            return this.auth;
-        }
-    }
+    public static final class ResponseValue implements UseCase.ResponseValue {}
 
 }

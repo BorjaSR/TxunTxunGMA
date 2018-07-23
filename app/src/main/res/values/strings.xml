@@ -4,6 +4,7 @@
     <string name="prompt_password">Contraseña</string>
     <string name="sign_in">Iniciar sesión</string>
     <string name="wrong_password">Contraseña incorrecta</string>
+    <string name="logout">Cerrar sesión</string>
 
     <string-array name="roles">
         <item>Componente</item>

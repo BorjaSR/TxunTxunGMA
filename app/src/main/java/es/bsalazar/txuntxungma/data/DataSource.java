@@ -11,5 +11,7 @@ public interface DataSource {
 
     void getLoginData(DataCallback<Auth, BaseError> callback);
 
-    void getAuth(AuthRequest request, DataCallback<Boolean, BaseError> callback);
+    void removeLoginData(DataCallback<Boolean, BaseError> callback);
+
+    void getAuth(AuthRequest request, DataCallback<String, BaseError> callback);
 }

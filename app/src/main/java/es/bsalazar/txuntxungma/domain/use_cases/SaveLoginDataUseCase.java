@@ -20,7 +20,7 @@ public class SaveLoginDataUseCase extends UseCase<SaveLoginDataUseCase.RequestVa
         dataProvider.saveLoginData(requestValues.getAuthRequest(), new DataCallback<Boolean, BaseError>() {
             @Override
             public void onSuccess(Boolean result) {
-                getUseCaseCallback().onSuccess(null);
+                getUseCaseCallback().onSuccess(new ResponseValue());
             }
 
             @Override

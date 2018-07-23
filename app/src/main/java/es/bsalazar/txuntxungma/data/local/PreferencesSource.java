@@ -34,4 +34,8 @@ public class PreferencesSource implements IPreferencesSource {
         return new Auth(sharedPreferences.getString(LOGIN_DATA_KEY, ""));
     }
 
+    @Override
+    public boolean removeLoginData() {
+        return sharedPreferences.edit().remove(LOGIN_DATA_KEY).commit();
+    }
 }

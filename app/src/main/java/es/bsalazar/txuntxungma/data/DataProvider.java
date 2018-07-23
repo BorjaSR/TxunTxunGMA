@@ -1,5 +1,6 @@
 package es.bsalazar.txuntxungma.data;
 
+import es.bsalazar.txuntxungma.data.remote.FirestoreSource;
 import es.bsalazar.txuntxungma.domain.entities.Auth;
 import es.bsalazar.txuntxungma.domain.entities.BaseError;
 import es.bsalazar.txuntxungma.domain.entities.DataCallback;
@@ -44,7 +45,16 @@ public class DataProvider implements DataSource {
     }
 
     @Override
-    public void getAuth(AuthRequest request, DataCallback<Boolean, BaseError> callback) {
-        firestoreManager.getAuth(request.getRoleID(), document -> callback.onSuccess(request.getEncryptPass().equals(document)));
+    public void removeLoginData(DataCallback<Boolean, BaseError> callback) {
+        try{
+            callback.onSuccess(preferencesSource.removeLoginData());
+        }catch (Exception e){
+            callback.onFailure(BaseError.getStandardError());
+        }
+    }
+
+    @Override
+    public void getAuth(AuthRequest request, DataCallback<String, BaseError> callback) {
+        firestoreManager.getAuth(request.getRoleID(), callback::onSuccess);
     }
 }

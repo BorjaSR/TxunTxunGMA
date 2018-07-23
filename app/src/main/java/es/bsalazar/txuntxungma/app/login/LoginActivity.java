@@ -20,6 +20,7 @@ import es.bsalazar.txuntxungma.Injector;
 import es.bsalazar.txuntxungma.R;
 import es.bsalazar.txuntxungma.app.MainActivity;
 import es.bsalazar.txuntxungma.app.base.BaseActivity;
+import es.bsalazar.txuntxungma.domain.entities.Auth;
 import es.bsalazar.txuntxungma.utils.ResultState;
 import es.bsalazar.txuntxungma.utils.ShowState;
 import es.bsalazar.txuntxungma.utils.Tools;
@@ -65,12 +66,14 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
             performLogin();
             return false;
         });
+
+        viewModel.getLoginData();
     }
 
     @Override
     public LoginViewModel setupViewModel() {
         return ViewModelProviders.of(this,
-                Injector.provideLoginViewModelFactory())
+                Injector.provideLoginViewModelFactory(getApplicationContext()))
                 .get(LoginViewModel.class);
     }
 
@@ -78,6 +81,7 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
     public void observeViewModel() {
         viewModel.getLoadingProgress().observe(this, this::toogleLoading);
         viewModel.getLoginResult().observe(this, this::handleLoginResult);
+        viewModel.getSaveAuth().observe(this, this::handleAuth);
     }
 
     @OnClick(R.id.sign_in_button)
@@ -95,6 +99,12 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
           finish();
         } else
             showSnackbar(getString(R.string.wrong_password));
+    }
+
+    public void handleAuth(Auth auth) {
+        if (auth != null){
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 }
 
