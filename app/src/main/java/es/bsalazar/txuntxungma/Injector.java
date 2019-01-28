@@ -3,6 +3,8 @@ package es.bsalazar.txuntxungma;
 import android.content.Context;
 
 import es.bsalazar.txuntxungma.app.MainActivityViewModelFactory;
+import es.bsalazar.txuntxungma.app.components.ComponentsViewModel;
+import es.bsalazar.txuntxungma.app.components.ComponentsViewModelFactory;
 import es.bsalazar.txuntxungma.app.login.LoginViewModelFactory;
 import es.bsalazar.txuntxungma.data.DataProvider;
 import es.bsalazar.txuntxungma.data.DataSource;
@@ -52,6 +54,9 @@ public class Injector {
     public static MainActivityViewModelFactory provideMainActivityViewModelFactory(Context context){
         return new MainActivityViewModelFactory(provideUseCaseHandler(),
                 provideRemoveLoginDataUseCase(context));
+    }
+    public static ComponentsViewModelFactory provideComponentsViewModelFactory(Context context){
+        return new ComponentsViewModelFactory(provideUseCaseHandler());
     }
     //endregion
 

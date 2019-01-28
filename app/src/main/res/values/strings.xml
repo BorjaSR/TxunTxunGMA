@@ -5,6 +5,10 @@
     <string name="sign_in">Iniciar sesión</string>
     <string name="wrong_password">Contraseña incorrecta</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="components_card_text">Componentes</string>
+    <string name="rates_card_text">Tarifas</string>
+    <string name="releases_card_text">Comunicados</string>
+    <string name="calendar_card_text">Agenda</string>
 
     <string-array name="roles">
         <item>Componente</item>

@@ -15,10 +15,11 @@ import es.bsalazar.txuntxungma.utils.LogUtils;
 import es.bsalazar.txuntxungma.utils.ResultState;
 import es.bsalazar.txuntxungma.utils.ShowState;
 
-class MainActivityViewModel extends BaseViewModel {
+public class MainActivityViewModel extends BaseViewModel {
 
     private RemoveLoginDataUseCase removeLoginDataUseCase;
     private MutableLiveData<ResultState> removeLoginDataResult = new MutableLiveData<ResultState>(){};
+    private MutableLiveData<Integer> fragmentID = new MutableLiveData<Integer>(){};
 
     MainActivityViewModel(UseCaseHandler useCaseHandler,
                           RemoveLoginDataUseCase removeLoginDataUseCase) {
@@ -45,5 +46,13 @@ class MainActivityViewModel extends BaseViewModel {
 
     public MutableLiveData<ResultState> getRemoveLoginDataResult() {
         return removeLoginDataResult;
+    }
+
+    public MutableLiveData<Integer> getFragmentID() {
+        return fragmentID;
+    }
+
+    public void setFragmentID(Integer integer){
+        fragmentID.setValue(integer);
     }
 }
