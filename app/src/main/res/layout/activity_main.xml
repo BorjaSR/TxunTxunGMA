@@ -6,10 +6,8 @@
     android:layout_height="match_parent"
     tools:context="es.bsalazar.txuntxungma.app.MainActivity">
 
-    <!--android:name="com.dia.services.app.billing.billing_detail.BillingDetailFragment"-->
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment_container"
-        android:name="es.bsalazar.txuntxungma.app.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

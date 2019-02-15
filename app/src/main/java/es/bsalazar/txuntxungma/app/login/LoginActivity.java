@@ -104,6 +104,7 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
     public void handleAuth(Auth auth) {
         if (auth != null){
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 }

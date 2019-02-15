@@ -9,6 +9,18 @@
     <string name="rates_card_text">Tarifas</string>
     <string name="releases_card_text">Comunicados</string>
     <string name="calendar_card_text">Agenda</string>
+    <string name="there_arent_components">Aún no hay componentes registrados</string>
+    <string name="subtitle_components_fragment">A continuacion presentamos la lista actual de los miembros de la cuadrilla</string>
+    <string name="action_add">Añadir</string>
+    <string name="hint_new_component">Nombre del componente</string>
+    <string name="cancel">Cancelar</string>
+    <string name="msg_new_component">Escribe a continuación el nombre del nuevo componente</string>
+    <string name="continue_text">Continuar</string>
+    <string name="remove_confirm_dialog_title">¿Estás seguro?</string>
+    <string name="remove_confirm_dialog_message">Si continuas se eliminara de forma permanente</string>
+    <string name="msg_modify_component">Modifica aqui el nombre del componente</string>
+    <string name="acccept">Aceptar</string>
+    <string name="separator">...........................................................................................................</string>
 
     <string-array name="roles">
         <item>Componente</item>

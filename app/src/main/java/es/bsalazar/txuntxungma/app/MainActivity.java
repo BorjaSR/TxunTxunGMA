@@ -13,8 +13,10 @@ import android.widget.Toast;
 import es.bsalazar.txuntxungma.Injector;
 import es.bsalazar.txuntxungma.R;
 import es.bsalazar.txuntxungma.app.base.BaseActivity;
+import es.bsalazar.txuntxungma.app.components.ComponentsFragment;
 import es.bsalazar.txuntxungma.app.home.HomeFragment;
 import es.bsalazar.txuntxungma.app.login.LoginActivity;
+import es.bsalazar.txuntxungma.app.rates.RatesFragment;
 import es.bsalazar.txuntxungma.utils.ResultState;
 
 public class MainActivity extends BaseActivity<MainActivityViewModel> {
@@ -31,22 +33,9 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.logout:
-                viewModel.removeLoginData();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setInitialFragment();
     }
 
     @Override
@@ -63,19 +52,32 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
     }
 
     private void logout(ResultState resultState) {
-        if (resultState == ResultState.OK){
+        if (resultState == ResultState.OK) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }
 
-    private void changeFragment(Integer fragmentID){
-        Toast.makeText(this, "Change to " + fragmentID + " fragment", Toast.LENGTH_SHORT).show();
+
+    private void setInitialFragment() {
+        Fragment initialFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, initialFragment)
+                .commit();
+    }
+
+    private void changeFragment(Integer fragmentID) {
         Fragment newFragment = null;
 
         switch (fragmentID) {
             case HOME_FRAGMENT:
                 newFragment = new HomeFragment();
+                break;
+            case COMPONENTS_FRAGMENT:
+                newFragment = new ComponentsFragment();
+                break;
+            case RATES_FRAGMENT:
+                newFragment = new RatesFragment();
                 break;
         }
 

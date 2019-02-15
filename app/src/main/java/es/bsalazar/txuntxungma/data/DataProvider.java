@@ -3,9 +3,11 @@ package es.bsalazar.txuntxungma.data;
 import es.bsalazar.txuntxungma.data.remote.FirestoreSource;
 import es.bsalazar.txuntxungma.domain.entities.Auth;
 import es.bsalazar.txuntxungma.domain.entities.BaseError;
+import es.bsalazar.txuntxungma.domain.entities.Component;
 import es.bsalazar.txuntxungma.domain.entities.DataCallback;
 import es.bsalazar.txuntxungma.data.local.IPreferencesSource;
 import es.bsalazar.txuntxungma.data.remote.IFirestoreSource;
+import es.bsalazar.txuntxungma.domain.entities.Rate;
 import es.bsalazar.txuntxungma.domain.requests.AuthRequest;
 
 public class DataProvider implements DataSource {
@@ -56,5 +58,45 @@ public class DataProvider implements DataSource {
     @Override
     public void getAuth(AuthRequest request, DataCallback<String, BaseError> callback) {
         firestoreManager.getAuth(request.getRoleID(), callback::onSuccess);
+    }
+
+    @Override
+    public void getComponents(FirestoreSource.OnCollectionChangedListener<Component> callback) {
+        firestoreManager.getComponents(callback);
+    }
+
+    @Override
+    public void saveComponent(Component component, FirestoreSource.OnDocumentSavedListener<Component> callback) {
+        firestoreManager.saveComponent(component, callback);
+    }
+
+    @Override
+    public void updateComponent(Component component, FirestoreSource.OnDocumentSavedListener<Component> callback) {
+        firestoreManager.updateComponent(component, callback);
+    }
+
+    @Override
+    public void deleteComponent(String componentId) {
+        firestoreManager.deleteComponent(componentId);
+    }
+
+    @Override
+    public void getRates(FirestoreSource.OnCollectionChangedListener<Rate> callback) {
+        firestoreManager.getRates(callback);
+    }
+
+    @Override
+    public void saveRate(Rate rate, FirestoreSource.OnDocumentSavedListener<Rate> callback) {
+        firestoreManager.saveRate(rate, callback);
+    }
+
+    @Override
+    public void updateRate(Rate rate, FirestoreSource.OnDocumentSavedListener<Rate> callback) {
+        firestoreManager.updateRate(rate, callback);
+    }
+
+    @Override
+    public void deleteRate(String rateId) {
+        firestoreManager.deleteComponent(rateId);
     }
 }

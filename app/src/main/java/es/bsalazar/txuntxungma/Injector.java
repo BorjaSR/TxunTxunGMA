@@ -3,11 +3,11 @@ package es.bsalazar.txuntxungma;
 import android.content.Context;
 
 import es.bsalazar.txuntxungma.app.MainActivityViewModelFactory;
-import es.bsalazar.txuntxungma.app.components.ComponentsViewModel;
 import es.bsalazar.txuntxungma.app.components.ComponentsViewModelFactory;
+import es.bsalazar.txuntxungma.app.home.HomeViewModelFactory;
 import es.bsalazar.txuntxungma.app.login.LoginViewModelFactory;
+import es.bsalazar.txuntxungma.app.rates.RatesViewModelFactory;
 import es.bsalazar.txuntxungma.data.DataProvider;
-import es.bsalazar.txuntxungma.data.DataSource;
 import es.bsalazar.txuntxungma.data.local.PreferencesSource;
 import es.bsalazar.txuntxungma.data.remote.FirestoreSource;
 import es.bsalazar.txuntxungma.data.remote.StorageManager;
@@ -24,7 +24,7 @@ public class Injector {
         return UseCaseHandler.getInstance();
     }
 
-    private static DataProvider provideDataProvider(Context context){
+    public static DataProvider provideDataProvider(Context context){
         return DataProvider.getInstance(
                 providePreferencesSource(context),
                 provideFirestoreManager());
@@ -55,8 +55,17 @@ public class Injector {
         return new MainActivityViewModelFactory(provideUseCaseHandler(),
                 provideRemoveLoginDataUseCase(context));
     }
+
     public static ComponentsViewModelFactory provideComponentsViewModelFactory(Context context){
         return new ComponentsViewModelFactory(provideUseCaseHandler());
+    }
+
+    public static HomeViewModelFactory provideHomeViewModelFactory(Context context){
+        return new HomeViewModelFactory(provideUseCaseHandler(), provideDataProvider(context));
+    }
+
+    public static RatesViewModelFactory provideRatesViewModelFactory(Context context){
+        return new RatesViewModelFactory(provideDataProvider(context));
     }
     //endregion
 
