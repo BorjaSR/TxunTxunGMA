@@ -21,6 +21,19 @@
     <string name="msg_modify_component">Modifica aqui el nombre del componente</string>
     <string name="acccept">Aceptar</string>
     <string name="separator">...........................................................................................................</string>
+    <string name="price">%s €</string>
+    <string name="rate_description_hint">Nombre de la cuota</string>
+    <string name="hint_rate_amount">Precio</string>
+    <string name="hint_rate_description">Nombre de la cuota</string>
+    <string name="rate_amount">Precio de la cuota</string>
+    <string name="rate_description">Nombre de la cuota</string>
+    <string name="add">Añadir</string>
+    <string name="rate_add_succesfully">Tarifa añadida con exito</string>
+    <string name="error_ocurred">Ha ocurrida un error</string>
+    <string name="modify">Modificar</string>
+    <string name="fragment_title_home">Txun Txun G.M.A.</string>
+    <string name="fragment_title_components">Componentes</string>
+    <string name="fragment_title_rates">Cuotas</string>
 
     <string-array name="roles">
         <item>Componente</item>

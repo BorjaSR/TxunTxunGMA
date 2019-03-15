@@ -93,7 +93,7 @@ public class ComponentsViewModel extends BaseViewModel {
     }
 
     void saveComponent(String name){
-        dataSource.saveComponent(new Component(name), document -> saveComponentResult.setValue(document));
+        dataSource.saveComponent(new Component(name), component -> saveComponentResult.setValue(component));
     }
 
     void deleteComponent(String componentId){

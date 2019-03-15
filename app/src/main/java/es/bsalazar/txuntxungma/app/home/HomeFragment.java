@@ -23,6 +23,7 @@ import es.bsalazar.txuntxungma.app.MainActivity;
 import es.bsalazar.txuntxungma.app.MainActivityViewModel;
 import es.bsalazar.txuntxungma.app.base.BaseFragment;
 import es.bsalazar.txuntxungma.app.login.LoginActivity;
+import es.bsalazar.txuntxungma.utils.Constants;
 import es.bsalazar.txuntxungma.utils.ResultState;
 
 public class HomeFragment extends BaseFragment<HomeViewModel> {
@@ -30,13 +31,19 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
     private MainActivityViewModel mainActivityViewModel;
 
     @Override
+    public String provideTag() {
+        return Constants.HOME_FRAGMENT;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
-            setReturnTransition(new Fade());
-            setExitTransition(new Fade());
+            Fade fade = new Fade();
+            setReturnTransition(fade);
+            setExitTransition(fade);
 
             setAllowEnterTransitionOverlap(false);
             setAllowReturnTransitionOverlap(false);

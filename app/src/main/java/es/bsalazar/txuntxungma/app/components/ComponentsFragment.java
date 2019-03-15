@@ -31,6 +31,7 @@ import es.bsalazar.txuntxungma.app.base.BaseFragment;
 import es.bsalazar.txuntxungma.data.remote.FirebaseResponse;
 import es.bsalazar.txuntxungma.domain.entities.Auth;
 import es.bsalazar.txuntxungma.domain.entities.Component;
+import es.bsalazar.txuntxungma.utils.Constants;
 import es.bsalazar.txuntxungma.utils.ShowState;
 
 public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implements SwipeRefreshLayout.OnRefreshListener, ComponentsAdapter.ComponentEditListener {
@@ -44,7 +45,12 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
 
     private boolean scheduleAnim = false;
     private ComponentsAdapter adapter;
+    private String roleId = Auth.COMPONENT_ROLE;
 
+    @Override
+    public String provideTag() {
+        return Constants.COMPONENTS_FRAGMENT;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Slide slide = new Slide();
-            slide.setSlideEdge(Gravity.RIGHT);
+            slide.setSlideEdge(Gravity.END);
 
             setEnterTransition(slide);
             setReenterTransition(slide);
@@ -64,7 +70,7 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
         }
 
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -84,11 +90,11 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
         viewModel.getAuthData();
     }
 
-
     //refion Menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.add_component_menu, menu);
+        if (roleId.equals(Auth.CEO_ROLE))
+            inflater.inflate(R.menu.add_component_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -144,7 +150,7 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
 
     private void handleAuth(Auth auth) {
         if (auth != null && auth.getRoleID().equals(Auth.CEO_ROLE)) {
-            setHasOptionsMenu(true);
+            roleId = Auth.CEO_ROLE;
 
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 @Override
@@ -163,6 +169,7 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
 
             itemTouchHelper.attachToRecyclerView(recyclerView);
         }
+        setHasOptionsMenu(true);
     }
 
     private void presentComponentsList(List<Component> components) {
@@ -189,6 +196,14 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
         scheduleAnim = true;
         viewModel.getComponentsFromDataSource();
     }
+
+    @Override
+    public void onEditComponent(Component component) {
+        if (roleId.equals(Auth.CEO_ROLE))
+            showModifyComponentDialog(component);
+    }
+
+    //region Dialogs
 
     private void showAddComponentDialog() {
         // Create EditText
@@ -242,9 +257,5 @@ public class ComponentsFragment extends BaseFragment<ComponentsViewModel> implem
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
-
-    @Override
-    public void onEditComponent(Component component) {
-        showModifyComponentDialog(component);
-    }
+    //endregion
 }

@@ -108,7 +108,7 @@ public class ComponentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return components.get(position);
     }
 
-    public void setComponentEditListener(ComponentEditListener componentEditListener) {
+    void setComponentEditListener(ComponentEditListener componentEditListener) {
         this.componentEditListener = componentEditListener;
     }
 

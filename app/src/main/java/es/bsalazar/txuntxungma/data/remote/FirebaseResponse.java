@@ -4,13 +4,6 @@ public class FirebaseResponse<T> {
     private int index;
     private T response;
 
-    public FirebaseResponse() {
-    }
-
-    public FirebaseResponse(int index) {
-        this.index = index;
-    }
-
     public FirebaseResponse(int index, T response) {
         this.index = index;
         this.response = response;

@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
         spinner_role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setRoleSelected(position);
+                getViewModel().setRoleSelected(position);
             }
 
             @Override
@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
             return false;
         });
 
-        viewModel.getLoginData();
+        getViewModel().getLoginData();
     }
 
     @Override
@@ -79,14 +79,14 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
 
     @Override
     public void observeViewModel() {
-        viewModel.getLoadingProgress().observe(this, this::toogleLoading);
-        viewModel.getLoginResult().observe(this, this::handleLoginResult);
-        viewModel.getSaveAuth().observe(this, this::handleAuth);
+        getViewModel().getLoadingProgress().observe(this, this::toogleLoading);
+        getViewModel().getLoginResult().observe(this, this::handleLoginResult);
+        getViewModel().getSaveAuth().observe(this, this::handleAuth);
     }
 
     @OnClick(R.id.sign_in_button)
     public void performLogin() {
-        viewModel.performLogin(Tools.encryptMD5(password.getText().toString()));
+        getViewModel().performLogin(Tools.encryptMD5(password.getText().toString()));
     }
 
     public void toogleLoading(ShowState showState) {

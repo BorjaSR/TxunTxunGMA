@@ -208,9 +208,9 @@ public class FirestoreSource implements IFirestoreSource {
     //region Interfaces
     public interface OnCollectionChangedListener<T> {
         void onCollectionChange(List<T> collection);
-        void onDocumentAdded(int index, T object);
-        void onDocumentChanged(int index, T object);
-        void onDocumentRemoved(int index, T object);
+        void onDocumentAdded(int index, T document);
+        void onDocumentChanged(int index, T document);
+        void onDocumentRemoved(int index, T document);
     }
 
     public interface OnDocumentLoadedListener<T> {

@@ -3,6 +3,7 @@ package es.bsalazar.txuntxungma.app;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,10 +14,12 @@ import android.widget.Toast;
 import es.bsalazar.txuntxungma.Injector;
 import es.bsalazar.txuntxungma.R;
 import es.bsalazar.txuntxungma.app.base.BaseActivity;
+import es.bsalazar.txuntxungma.app.base.BaseFragment;
 import es.bsalazar.txuntxungma.app.components.ComponentsFragment;
 import es.bsalazar.txuntxungma.app.home.HomeFragment;
 import es.bsalazar.txuntxungma.app.login.LoginActivity;
 import es.bsalazar.txuntxungma.app.rates.RatesFragment;
+import es.bsalazar.txuntxungma.utils.Constants;
 import es.bsalazar.txuntxungma.utils.ResultState;
 
 public class MainActivity extends BaseActivity<MainActivityViewModel> {
@@ -39,6 +42,16 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(getTagFromActualFragment() != null &&
+                getSupportActionBar() != null &&
+                getTagFromActualFragment().equals(Constants.HOME_FRAGMENT))
+            getSupportActionBar().setTitle(getString(R.string.fragment_title_home));
+    }
+
+    @NonNull
+    @Override
     public MainActivityViewModel setupViewModel() {
         return ViewModelProviders.of(this,
                 Injector.provideMainActivityViewModelFactory(this))
@@ -47,8 +60,8 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
 
     @Override
     public void observeViewModel() {
-        viewModel.getRemoveLoginDataResult().observe(this, this::logout);
-        viewModel.getFragmentID().observe(this, this::changeFragment);
+        getViewModel().getRemoveLoginDataResult().observe(this, this::logout);
+        getViewModel().getFragmentID().observe(this, this::changeFragment);
     }
 
     private void logout(ResultState resultState) {
@@ -60,31 +73,34 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
 
 
     private void setInitialFragment() {
-        Fragment initialFragment = new HomeFragment();
+        BaseFragment initialFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, initialFragment)
+                .replace(R.id.fragment_container, initialFragment, initialFragment.provideTag())
                 .commit();
     }
 
     private void changeFragment(Integer fragmentID) {
-        Fragment newFragment = null;
+        BaseFragment newFragment = null;
 
         switch (fragmentID) {
             case HOME_FRAGMENT:
                 newFragment = new HomeFragment();
+                getSupportActionBar().setTitle(getString(R.string.fragment_title_home));
                 break;
             case COMPONENTS_FRAGMENT:
                 newFragment = new ComponentsFragment();
+                getSupportActionBar().setTitle(getString(R.string.fragment_title_components));
                 break;
             case RATES_FRAGMENT:
                 newFragment = new RatesFragment();
+                getSupportActionBar().setTitle(getString(R.string.fragment_title_rates));
                 break;
         }
 
         if (newFragment != null) {
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, newFragment)
+                    .replace(R.id.fragment_container, newFragment,  newFragment.provideTag())
                     .addToBackStack(null)
                     .commit();
         }

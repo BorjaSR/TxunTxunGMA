@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:text="@string/rate_description"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/edit_rate_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:inputType="text"
+        android:lines="1"
+        android:hint="@string/hint_rate_description"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:text="@string/rate_amount"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/edit_rate_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:inputType="numberDecimal"
+        android:lines="1"
+        android:hint="@string/hint_rate_amount"
+        />
+
+</LinearLayout>

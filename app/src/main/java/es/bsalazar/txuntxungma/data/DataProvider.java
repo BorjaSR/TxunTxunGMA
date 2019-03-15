@@ -97,6 +97,6 @@ public class DataProvider implements DataSource {
 
     @Override
     public void deleteRate(String rateId) {
-        firestoreManager.deleteComponent(rateId);
+        firestoreManager.deleteRate(rateId);
     }
 }

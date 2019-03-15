@@ -43,6 +43,8 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
 
     public abstract void observeViewModel();
 
+    public abstract String provideTag();
+
     public void showSnackbar(String msg) {
         if (this.getView() != null)
             Snackbar.make(this.getView(), msg, BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -51,5 +53,4 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
     public void showToast(String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
     }
-
 }
