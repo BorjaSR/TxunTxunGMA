@@ -5,7 +5,9 @@ import es.bsalazar.txuntxungma.domain.entities.Auth;
 import es.bsalazar.txuntxungma.domain.entities.BaseError;
 import es.bsalazar.txuntxungma.domain.entities.Component;
 import es.bsalazar.txuntxungma.domain.entities.DataCallback;
+import es.bsalazar.txuntxungma.domain.entities.Event;
 import es.bsalazar.txuntxungma.domain.entities.Rate;
+import es.bsalazar.txuntxungma.domain.entities.Release;
 import es.bsalazar.txuntxungma.domain.requests.AuthRequest;
 
 public interface DataSource {
@@ -33,4 +35,20 @@ public interface DataSource {
     void updateRate(Rate rate, FirestoreSource.OnDocumentSavedListener<Rate> callback);
 
     void deleteRate(String rateId);
+
+    void getEvents(FirestoreSource.OnCollectionChangedListener<Event> callback);
+
+    void saveEvent(Event event, FirestoreSource.OnDocumentSavedListener<Event> callback);
+
+    void updateEvent(Event event, FirestoreSource.OnDocumentSavedListener<Event> callback);
+
+    void deleteEvent(String eventId);
+
+    void getReleases(FirestoreSource.OnCollectionChangedListener<Release> callback);
+
+    void saveRelease(Release release, FirestoreSource.OnDocumentSavedListener<Release> callback);
+
+    void updateRelease(Release release, FirestoreSource.OnDocumentSavedListener<Release> callback);
+
+    void deleteRelease(String releaseId);
 }

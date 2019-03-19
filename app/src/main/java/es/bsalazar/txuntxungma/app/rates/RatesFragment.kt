@@ -2,11 +2,9 @@ package es.bsalazar.txuntxungma.app.rates
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,13 +18,15 @@ import es.bsalazar.txuntxungma.app.base.BaseFragment
 import es.bsalazar.txuntxungma.domain.entities.Auth
 import es.bsalazar.txuntxungma.domain.entities.Rate
 import es.bsalazar.txuntxungma.data.remote.FirebaseResponse
+import es.bsalazar.txuntxungma.nonNull
+import es.bsalazar.txuntxungma.observe
 import es.bsalazar.txuntxungma.utils.Constants
 import es.bsalazar.txuntxungma.utils.ShowState
 import kotlinx.android.synthetic.main.fragment_rates.*
 
 class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
 
-    private var scheduleAnim = true
+    private var scheduleAnim = false
     private var adapter: RatesAdapter? = null
     private var roleId: String = Auth.COMPONENT_ROLE
 
@@ -101,19 +101,13 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
 
 
     override fun observeViewModel() {
-        viewModel.ratesLiveData.observe(this, Observer { this.presentRatesList(it!!) })
-        viewModel.authLiveData.observe(this, Observer { auth -> auth?.let { this.handleAuth(auth) } })
-        viewModel.loadingProgress.observe(this, Observer { showState -> showState?.let { this.handleLoading(showState) } })
+        viewModel.ratesLiveData.nonNull().observe(this) { this.presentRatesList(it) }
+        viewModel.authLiveData.nonNull().observe(this) { auth -> this.handleAuth(auth) }
+        viewModel.loadingProgress.nonNull().observe(this) { showState -> this.handleLoading(showState) }
 
-        viewModel.addRateResponse.observe(this, Observer { addRateResponse ->
-            addRateResponse?.let { addRate(addRateResponse) }
-        })
-        viewModel.updateRateResponse.observe(this, Observer { updateRateResponse ->
-            updateRateResponse?.let { modifyRate(updateRateResponse) }
-        })
-        viewModel.deleteRateResponse.observe(this, Observer { deleteRateResponse ->
-            deleteRateResponse?.let { deleteRate(deleteRateResponse) }
-        })
+        viewModel.addRateResponse.nonNull().observe(this) { addRateResponse -> addRate(addRateResponse) }
+        viewModel.updateRateResponse.nonNull().observe(this) { updateRateResponse -> modifyRate(updateRateResponse) }
+        viewModel.deleteRateResponse.nonNull().observe(this) { deleteRateResponse -> deleteRate(deleteRateResponse) }
     }
 
     private fun initRecycler() {
@@ -130,7 +124,7 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
         adapter!!.setRates(rates)
     }
 
-    private fun handleLoading(showState: ShowState){
+    private fun handleLoading(showState: ShowState) {
         rates_swipe.isRefreshing = showState == ShowState.SHOW
     }
 
@@ -176,7 +170,7 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
 
         AlertDialog.Builder(context)
                 .setView(layout)
-                .setPositiveButton(getString(R.string.add)) { dialog, whichButton ->
+                .setPositiveButton(getString(R.string.add)) { _, _ ->
                     viewModel.saveRate(Rate(
                             layout.findViewById<EditText>(R.id.edit_rate_text).text.toString(),
                             layout.findViewById<EditText>(R.id.edit_rate_amount).text.toString().toDouble()
@@ -201,7 +195,7 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
 
         AlertDialog.Builder(context)
                 .setView(layout)
-                .setPositiveButton(getString(R.string.modify)) { dialog, whichButton ->
+                .setPositiveButton(getString(R.string.modify)) { _, _ ->
                     rate.description = description_edit.text.toString()
                     rate.amount = amount_edit.text.toString().toDouble()
 

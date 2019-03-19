@@ -7,7 +7,9 @@ import es.bsalazar.txuntxungma.domain.entities.Component;
 import es.bsalazar.txuntxungma.domain.entities.DataCallback;
 import es.bsalazar.txuntxungma.data.local.IPreferencesSource;
 import es.bsalazar.txuntxungma.data.remote.IFirestoreSource;
+import es.bsalazar.txuntxungma.domain.entities.Event;
 import es.bsalazar.txuntxungma.domain.entities.Rate;
+import es.bsalazar.txuntxungma.domain.entities.Release;
 import es.bsalazar.txuntxungma.domain.requests.AuthRequest;
 
 public class DataProvider implements DataSource {
@@ -98,5 +100,45 @@ public class DataProvider implements DataSource {
     @Override
     public void deleteRate(String rateId) {
         firestoreManager.deleteRate(rateId);
+    }
+
+    @Override
+    public void getEvents(FirestoreSource.OnCollectionChangedListener<Event> callback) {
+        firestoreManager.getEvents(callback);
+    }
+
+    @Override
+    public void saveEvent(Event event, FirestoreSource.OnDocumentSavedListener<Event> callback) {
+        firestoreManager.saveEvent(event, callback);
+    }
+
+    @Override
+    public void updateEvent(Event event, FirestoreSource.OnDocumentSavedListener<Event> callback) {
+        firestoreManager.updateEvent(event, callback);
+    }
+
+    @Override
+    public void deleteEvent(String eventId) {
+        firestoreManager.deleteEvent(eventId);
+    }
+
+    @Override
+    public void getReleases(FirestoreSource.OnCollectionChangedListener<Release> callback) {
+        firestoreManager.getReleases(callback);
+    }
+
+    @Override
+    public void saveRelease(Release release, FirestoreSource.OnDocumentSavedListener<Release> callback) {
+        firestoreManager.saveRelease(release, callback);
+    }
+
+    @Override
+    public void updateRelease(Release release, FirestoreSource.OnDocumentSavedListener<Release> callback) {
+        firestoreManager.updateRelease(release, callback);
+    }
+
+    @Override
+    public void deleteRelease(String releaseId) {
+        firestoreManager.deleteRelease(releaseId);
     }
 }

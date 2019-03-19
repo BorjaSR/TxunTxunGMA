@@ -16,6 +16,7 @@ import es.bsalazar.txuntxungma.R;
 import es.bsalazar.txuntxungma.app.base.BaseActivity;
 import es.bsalazar.txuntxungma.app.base.BaseFragment;
 import es.bsalazar.txuntxungma.app.components.ComponentsFragment;
+import es.bsalazar.txuntxungma.app.events.EventsFragment;
 import es.bsalazar.txuntxungma.app.home.HomeFragment;
 import es.bsalazar.txuntxungma.app.login.LoginActivity;
 import es.bsalazar.txuntxungma.app.rates.RatesFragment;
@@ -27,7 +28,7 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
     public static final int HOME_FRAGMENT = 0;
     public static final int COMPONENTS_FRAGMENT = 1;
     public static final int RATES_FRAGMENT = 2;
-    public static final int CALENDAR_FRAGMENT = 3;
+    public static final int EVENTS_FRAGMENT = 3;
     public static final int RELEASES_FRAGMENT = 4;
 
     @Override
@@ -94,6 +95,10 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
             case RATES_FRAGMENT:
                 newFragment = new RatesFragment();
                 getSupportActionBar().setTitle(getString(R.string.fragment_title_rates));
+                break;
+            case EVENTS_FRAGMENT:
+                newFragment = new EventsFragment();
+                getSupportActionBar().setTitle(getString(R.string.fragment_title_events));
                 break;
         }
 

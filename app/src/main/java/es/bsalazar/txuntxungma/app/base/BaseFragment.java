@@ -39,11 +39,12 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
         unbinder.unbind();
     }
 
+    public abstract String provideTag();
+
     public abstract T setupViewModel();
 
     public abstract void observeViewModel();
 
-    public abstract String provideTag();
 
     public void showSnackbar(String msg) {
         if (this.getView() != null)

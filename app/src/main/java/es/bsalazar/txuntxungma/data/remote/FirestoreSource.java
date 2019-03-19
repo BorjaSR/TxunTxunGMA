@@ -1,5 +1,6 @@
 package es.bsalazar.txuntxungma.data.remote;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentChange;
@@ -10,9 +11,12 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import es.bsalazar.txuntxungma.domain.entities.Component;
+import es.bsalazar.txuntxungma.domain.entities.Event;
 import es.bsalazar.txuntxungma.domain.entities.Rate;
+import es.bsalazar.txuntxungma.domain.entities.Release;
 
 public class FirestoreSource implements IFirestoreSource {
 
@@ -21,6 +25,8 @@ public class FirestoreSource implements IFirestoreSource {
     private static final String ROLES_COLLECTION = "roles";
     private static final String COMPONENTS_COLLECTION = "components";
     private static final String RATES_COLLECTION = "rates";
+    private static final String EVENTS_COLLECTION = "events";
+    private static final String RELEASES_COLLECTION = "releases";
 
     private FirebaseFirestore db;
     private static FirestoreSource instance;
@@ -120,12 +126,73 @@ public class FirestoreSource implements IFirestoreSource {
                 });
     }
 
+    @Override
+    public void getEvents(OnCollectionChangedListener<Event> callback) {
+        db.collection(EVENTS_COLLECTION)
+                .orderBy("date", Query.Direction.ASCENDING)
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+
+                    if (value != null) {
+                        for (DocumentChange documentChange : value.getDocumentChanges()) {
+                            if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                                callback.onDocumentAdded(documentChange.getNewIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));
+
+                            } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
+                                callback.onDocumentChanged(documentChange.getNewIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));
+
+                            } else if (documentChange.getType() == DocumentChange.Type.REMOVED) {
+                                callback.onDocumentRemoved(documentChange.getOldIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));
+                            }
+                        }
+
+                        final ArrayList<Event> events = new ArrayList<>();
+                        for (DocumentSnapshot doc : value)
+                            events.add(new Event(doc.getId(), doc));
+                        callback.onCollectionChange(events);
+                    }
+                });
+    }
+
+    @Override
+    public void getReleases(OnCollectionChangedListener<Release> callback) {
+        db.collection(RELEASES_COLLECTION)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+
+                    if (value != null) {
+                        for (DocumentChange documentChange : value.getDocumentChanges()) {
+                            if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                                callback.onDocumentAdded(documentChange.getNewIndex(), new Release(documentChange.getDocument().getId(), documentChange.getDocument()));
+
+                            } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
+                                callback.onDocumentChanged(documentChange.getNewIndex(), new Release(documentChange.getDocument().getId(), documentChange.getDocument()));
+
+                            } else if (documentChange.getType() == DocumentChange.Type.REMOVED) {
+                                callback.onDocumentRemoved(documentChange.getOldIndex(), new Release(documentChange.getDocument().getId(), documentChange.getDocument()));
+                            }
+                        }
+
+                        final ArrayList<Release> releases = new ArrayList<>();
+                        for (DocumentSnapshot doc : value)
+                            releases.add(new Release(doc.getId(), doc));
+                        callback.onCollectionChange(releases);
+                    }
+                });
+    }
+
     //endregion
 
     //region SAVES
     @Override
     public void saveComponent(final Component component, final OnDocumentSavedListener<Component> listener) {
-
         Map<String, Object> componentMap = component.getMap();
 
         db.collection(COMPONENTS_COLLECTION)
@@ -142,14 +209,45 @@ public class FirestoreSource implements IFirestoreSource {
 
     @Override
     public void saveRate(Rate rate, OnDocumentSavedListener<Rate> listener) {
-
-        Map<String, Object> componentMap = rate.getMap();
+        Map<String, Object> rateMap = rate.getMap();
 
         db.collection(RATES_COLLECTION)
-                .add(componentMap)
+                .add(rateMap)
                 .addOnSuccessListener(documentReference -> {
                     rate.setId(documentReference.getId());
                     listener.onDocumentSaved(rate);
+                })
+                .addOnFailureListener(e -> {
+                    listener.onDocumentSaved(null);
+                    Log.w(TAG, "Error writing document", e);
+                });
+    }
+
+    @Override
+    public void saveEvent(Event event, OnDocumentSavedListener<Event> listener) {
+        Map<String, Object> eventMap = event.getMap();
+
+        db.collection(EVENTS_COLLECTION)
+                .add(eventMap)
+                .addOnSuccessListener(documentReference -> {
+                    event.setId(documentReference.getId());
+                    listener.onDocumentSaved(event);
+                })
+                .addOnFailureListener(e -> {
+                    listener.onDocumentSaved(null);
+                    Log.w(TAG, "Error writing document", e);
+                });
+    }
+
+    @Override
+    public void saveRelease(Release release, OnDocumentSavedListener<Release> listener) {
+        Map<String, Object> releaseMap = release.getMap();
+
+        db.collection(RELEASES_COLLECTION)
+                .add(releaseMap)
+                .addOnSuccessListener(documentReference -> {
+                    release.setId(documentReference.getId());
+                    listener.onDocumentSaved(release);
                 })
                 .addOnFailureListener(e -> {
                     listener.onDocumentSaved(null);
@@ -163,7 +261,6 @@ public class FirestoreSource implements IFirestoreSource {
 
     @Override
     public void updateComponent(Component component, OnDocumentSavedListener<Component> listener) {
-
         Map<String, Object> componentMap = component.getMap();
 
         db.collection(COMPONENTS_COLLECTION).document(component.getId())
@@ -174,12 +271,31 @@ public class FirestoreSource implements IFirestoreSource {
 
     @Override
     public void updateRate(Rate rate, OnDocumentSavedListener<Rate> listener) {
-
         Map<String, Object> componentMap = rate.getMap();
 
         db.collection(RATES_COLLECTION).document(rate.getId())
                 .set(componentMap)
                 .addOnSuccessListener(aVoid -> listener.onDocumentSaved(new Rate()))
+                .addOnFailureListener(e -> listener.onDocumentSaved(null));
+    }
+
+    @Override
+    public void updateEvent(Event event, OnDocumentSavedListener<Event> listener) {
+        Map<String, Object> componentMap = event.getMap();
+
+        db.collection(EVENTS_COLLECTION).document(Objects.requireNonNull(event.getId()))
+                .set(componentMap)
+                .addOnSuccessListener(aVoid -> listener.onDocumentSaved(event))
+                .addOnFailureListener(e -> listener.onDocumentSaved(null));
+    }
+
+    @Override
+    public void updateRelease(Release release, OnDocumentSavedListener<Release> listener) {
+        Map<String, Object> componentMap = release.getMap();
+
+        db.collection(RELEASES_COLLECTION).document(Objects.requireNonNull(release.getId()))
+                .set(componentMap)
+                .addOnSuccessListener(aVoid -> listener.onDocumentSaved(release))
                 .addOnFailureListener(e -> listener.onDocumentSaved(null));
     }
 
@@ -203,13 +319,32 @@ public class FirestoreSource implements IFirestoreSource {
                 .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
     }
 
+    @Override
+    public void deleteEvent(String eventId) {
+        db.collection(EVENTS_COLLECTION).document(eventId)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+    }
+
+    @Override
+    public void deleteRelease(String releaseId) {
+        db.collection(RELEASES_COLLECTION).document(releaseId)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+    }
+
     //endregion
 
     //region Interfaces
     public interface OnCollectionChangedListener<T> {
         void onCollectionChange(List<T> collection);
+
         void onDocumentAdded(int index, T document);
+
         void onDocumentChanged(int index, T document);
+
         void onDocumentRemoved(int index, T document);
     }
 

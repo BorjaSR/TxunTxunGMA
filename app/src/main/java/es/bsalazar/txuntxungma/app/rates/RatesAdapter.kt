@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import es.bsalazar.txuntxungma.R
 import es.bsalazar.txuntxungma.domain.entities.Rate
@@ -16,7 +15,7 @@ import kotlin.collections.ArrayList
 class RatesAdapter : RecyclerView.Adapter<RatesAdapter.RateViewHolder>() {
 
     private var rates: ArrayList<Rate> = ArrayList()
-    lateinit var onEditRate: OnEditRate
+    var onEditRate: OnEditRate? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RateViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_rate, parent, false);
@@ -28,11 +27,8 @@ class RatesAdapter : RecyclerView.Adapter<RatesAdapter.RateViewHolder>() {
     override fun onBindViewHolder(holder: RateViewHolder, position: Int) {
 
         holder.container.setOnLongClickListener {
-            if (onEditRate != null) {
-                onEditRate.onEditRate(rates[holder.adapterPosition])
-                return@setOnLongClickListener true
-            }
-            false
+            onEditRate?.onEditRate(rates[holder.adapterPosition])
+            return@setOnLongClickListener true
         }
 
         holder.description.text = rates[holder.adapterPosition].description
@@ -45,7 +41,6 @@ class RatesAdapter : RecyclerView.Adapter<RatesAdapter.RateViewHolder>() {
         this.rates = rates as ArrayList<Rate>
         notifyDataSetChanged()
     }
-
 
     internal fun addRate(index: Int, rate: Rate) {
         if (!containRate(rate)) {

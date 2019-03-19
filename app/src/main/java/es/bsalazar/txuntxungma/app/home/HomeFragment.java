@@ -107,8 +107,8 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 
     }
     @OnClick(R.id.calendar_card)
-    public void goToCalendarFragment(){
-        mainActivityViewModel.setFragmentID(MainActivity.CALENDAR_FRAGMENT);
+    public void goToEventsFragment(){
+        mainActivityViewModel.setFragmentID(MainActivity.EVENTS_FRAGMENT);
 
     }
 

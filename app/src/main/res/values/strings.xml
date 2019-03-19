@@ -34,6 +34,14 @@
     <string name="fragment_title_home">Txun Txun G.M.A.</string>
     <string name="fragment_title_components">Componentes</string>
     <string name="fragment_title_rates">Cuotas</string>
+    <string name="fragment_title_events">Agenda</string>
+    <string name="hint_event_name">Nombre del evento</string>
+    <string name="event_name">Nombre del evento</string>
+    <string name="hint_event_description">Descripcion</string>
+    <string name="event_description">Descripcion del evento</string>
+    <string name="hint_event_date">Fecha del evento</string>
+    <string name="incomplete_fields">Campos incompletos</string>
+    <string name="hint_event_hour">Hora del evento</string>
 
     <string-array name="roles">
         <item>Componente</item>

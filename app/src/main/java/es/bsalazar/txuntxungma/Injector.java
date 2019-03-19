@@ -4,9 +4,11 @@ import android.content.Context;
 
 import es.bsalazar.txuntxungma.app.MainActivityViewModelFactory;
 import es.bsalazar.txuntxungma.app.components.ComponentsViewModelFactory;
+import es.bsalazar.txuntxungma.app.events.EventsViewModelFactory;
 import es.bsalazar.txuntxungma.app.home.HomeViewModelFactory;
 import es.bsalazar.txuntxungma.app.login.LoginViewModelFactory;
 import es.bsalazar.txuntxungma.app.rates.RatesViewModelFactory;
+import es.bsalazar.txuntxungma.app.releases.ReleasesViewModelFactory;
 import es.bsalazar.txuntxungma.data.DataProvider;
 import es.bsalazar.txuntxungma.data.local.PreferencesSource;
 import es.bsalazar.txuntxungma.data.remote.FirestoreSource;
@@ -66,6 +68,14 @@ public class Injector {
 
     public static RatesViewModelFactory provideRatesViewModelFactory(Context context){
         return new RatesViewModelFactory(provideDataProvider(context));
+    }
+
+    public static EventsViewModelFactory provideEventsViewModelFactory(Context context){
+        return new EventsViewModelFactory(provideDataProvider(context));
+    }
+
+    public static ReleasesViewModelFactory provideReleasesViewModelFactory(Context context){
+        return new ReleasesViewModelFactory(provideDataProvider(context));
     }
     //endregion
 
