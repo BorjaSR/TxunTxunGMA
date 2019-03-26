@@ -71,7 +71,7 @@ public class Injector {
     }
 
     public static EventsViewModelFactory provideEventsViewModelFactory(Context context){
-        return new EventsViewModelFactory(provideDataProvider(context));
+        return new EventsViewModelFactory(context, provideDataProvider(context));
     }
 
     public static ReleasesViewModelFactory provideReleasesViewModelFactory(Context context){

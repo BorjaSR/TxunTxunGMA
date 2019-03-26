@@ -1,13 +1,14 @@
 package es.bsalazar.txuntxungma.domain.entities
 
 import com.google.firebase.firestore.DocumentSnapshot
+import java.io.Serializable
 import java.util.HashMap
 
-class Release {
+class Release : Serializable {
 
     var id: String? = null
     var date: Long = 0
-    var name: String? = null
+    var title: String? = null
     var description: String? = null
 
     constructor(id: String, document: DocumentSnapshot) {
@@ -15,28 +16,28 @@ class Release {
         this.id = id
         this.description = event.description
         this.date = event.date
-        this.name = event.name
+        this.title = event.title
     }
 
     constructor()
 
     constructor(date: Long, name: String, description: String) {
         this.description = description
-        this.name = name
+        this.title = name
         this.date = date
     }
 
     fun getMap(): HashMap<String, Any?> {
         val map = HashMap<String, Any?>()
         map["date"] = this.date
-        map["name"] = this.name
+        map["title"] = this.title
         map["description"] = this.description
         return map
     }
 
-    fun equals(event: Event) : Boolean {
-        return event.date == date &&
-                event.name.equals(name) &&
-                event.description.equals(description)
+    fun equals(release: Release) : Boolean {
+        return release.date == date &&
+                release.title.equals(title) &&
+                release.description.equals(description)
     }
 }

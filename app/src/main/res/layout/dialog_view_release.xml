@@ -12,33 +12,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
-        android:text="@string/rate_name"
+        android:text="@string/release_name"
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/edit_rate_name"
+        android:id="@+id/release_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:inputType="text"
         android:lines="1"
-        android:hint="@string/hint_rate_name"/>
+        android:hint="@string/hint_release_name"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
-        android:text="@string/rate_amount"
+        android:text="@string/release_text"
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/edit_rate_amount"
+        android:id="@+id/release_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:inputType="numberDecimal"
-        android:lines="1"
-        android:hint="@string/hint_rate_amount"
+        android:inputType="textMultiLine"
+        android:hint="@string/hint_release_text"
         />
 
 </LinearLayout>

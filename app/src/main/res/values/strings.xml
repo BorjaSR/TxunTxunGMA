@@ -24,9 +24,9 @@
     <string name="price">%s €</string>
     <string name="rate_description_hint">Nombre de la cuota</string>
     <string name="hint_rate_amount">Precio</string>
-    <string name="hint_rate_description">Nombre de la cuota</string>
+    <string name="hint_rate_name">Nombre de la cuota</string>
     <string name="rate_amount">Precio de la cuota</string>
-    <string name="rate_description">Nombre de la cuota</string>
+    <string name="rate_name">Nombre de la cuota</string>
     <string name="add">Añadir</string>
     <string name="rate_add_succesfully">Tarifa añadida con exito</string>
     <string name="error_ocurred">Ha ocurrida un error</string>
@@ -42,6 +42,17 @@
     <string name="hint_event_date">Fecha del evento</string>
     <string name="incomplete_fields">Campos incompletos</string>
     <string name="hint_event_hour">Hora del evento</string>
+    <string name="release_name">Titulo del comunicado</string>
+    <string name="hint_release_name">Titulo</string>
+    <string name="hint_release_text">Comunicado</string>
+    <string name="release_text">Comunicado</string>
+    <string name="fragment_title_releases">Comunicados</string>
+    <string name="transitionName_cardBackground">cardBrackground_transitionName</string>
+    <string name="activate_alarm">Activar alarma</string>
+    <string name="desactivate_alarm">Desactivar alarma</string>
+    <string name="alarm_activated_description">Se te avisara 2 horas antes del evento.</string>
+    <string name="alarm_defused_description">Se ha eliminado el aviso</string>
+    <string name="notification_description">Pulse para ver el evento</string>
 
     <string-array name="roles">
         <item>Componente</item>

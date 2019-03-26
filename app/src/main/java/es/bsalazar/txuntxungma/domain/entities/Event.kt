@@ -1,14 +1,16 @@
 package es.bsalazar.txuntxungma.domain.entities
 
 import com.google.firebase.firestore.DocumentSnapshot
+import java.io.Serializable
 import java.util.HashMap
 
-class Event{
+class Event : Serializable {
 
     var id: String? = null
     var date: Long = 0
     var name: String? = null
     var description: String? = null
+    var alarmActivated: Boolean = false
 
     constructor(id: String, document: DocumentSnapshot) {
         val event = document.toObject(this.javaClass)

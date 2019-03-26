@@ -1,10 +1,7 @@
 package es.bsalazar.txuntxungma.app.events
 
 import android.annotation.TargetApi
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.arch.lifecycle.Observer
+import android.app.*
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
@@ -16,17 +13,17 @@ import android.text.TextUtils
 import android.transition.Slide
 import android.view.*
 import android.widget.EditText
-import android.widget.TextClock
 import android.widget.TextView
-import android.widget.TimePicker
-import es.bsalazar.txuntxungma.*
+import es.bsalazar.txuntxungma.Injector
+import es.bsalazar.txuntxungma.R
 import es.bsalazar.txuntxungma.app.base.BaseFragment
 import es.bsalazar.txuntxungma.data.remote.FirebaseResponse
 import es.bsalazar.txuntxungma.domain.entities.Auth
 import es.bsalazar.txuntxungma.domain.entities.Event
+import es.bsalazar.txuntxungma.nonNull
+import es.bsalazar.txuntxungma.observe
 import es.bsalazar.txuntxungma.utils.ShowState
 import kotlinx.android.synthetic.main.fragment_events.*
-import kotlinx.android.synthetic.main.fragment_rates.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -156,7 +153,6 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
         setHasOptionsMenu(true)
     }
 
-
     fun addEvent(response: FirebaseResponse<Event>) =
             adapter?.addEvent(response.index, response.response)
 
@@ -166,6 +162,23 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
     fun deleteEvent(response: FirebaseResponse<Event>) =
             adapter?.removeEvent(response.index, response.response)
 
+    //region Implements Adapter
+
+    override fun onEditEvent(event: Event) = showEditEventDialog(event)
+
+    override fun onDefuseAlarm(event: Event) {
+        viewModel.defuseAlarmForEvent(event)
+        showToast(getString(R.string.alarm_defused_description))
+    }
+
+    override fun onActivateAlarm(event: Event) {
+        viewModel.activateAlarmForEvent(event)
+        showToast(getString(R.string.alarm_activated_description))
+    }
+
+    //endregion
+
+    //region Dialogs
 
     fun showNewEventDialog() {
         val layout = layoutInflater.inflate(R.layout.dialog_view_event, null)
@@ -175,40 +188,49 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
         val name_edit = layout.findViewById<EditText>(R.id.edit_event_name)
         val description_edit = layout.findViewById<EditText>(R.id.edit_event_description)
 
-        AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context)
                 .setView(layout)
-                .setPositiveButton(context?.getString(R.string.add)) { _, _ ->
-                    if (!TextUtils.isEmpty(date_edit.text.toString()) &&
-                            !TextUtils.isEmpty(name_edit.text.toString())) {
-
-                        val date = SAVE_DATE_FORMAT.parse("${date_edit.text} ${hour_edit.text}").time
-
-                        val newEvent = Event(
-                                date,
-                                name_edit.text.toString(),
-                                description_edit.text.toString())
-
-                        viewModel.saveEvent(newEvent)
-
-                    } else
-                        showToast(getString(R.string.incomplete_fields))
-                }
+                .setPositiveButton(context?.getString(R.string.add), null)//Se establece en el OnShowListener para controlar el dismiss
                 .setNegativeButton(context?.getString(R.string.cancel)) { _, _ ->
                     //NOTHING TO DO
-                }.show()
+                }.create()
 
-        date_edit.setOnClickListener { showDatePicker(date_edit) }
+        dialog.setOnShowListener {
+            val button = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+            button.setOnClickListener {
+                if (!TextUtils.isEmpty(date_edit.text.toString()) &&
+                        !TextUtils.isEmpty(hour_edit.text.toString()) &&
+                        !TextUtils.isEmpty(name_edit.text.toString())) {
+
+                    val date = SAVE_DATE_FORMAT.parse("${date_edit.text} ${hour_edit.text}").time
+
+                    val newEvent = Event(
+                            date,
+                            name_edit.text.toString(),
+                            description_edit.text.toString())
+
+                    viewModel.saveEvent(newEvent)
+                    dialog.dismiss()
+
+                } else
+                    showToast(getString(R.string.incomplete_fields))
+            }
+        }
+
+        dialog.show()
+
+        date_edit.setOnClickListener { showDatePicker(date_edit, parseStringDateToDate(date_edit.text.toString())) }
 
         hour_edit.setOnClickListener {
             showTimePicker(TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                 val builder = StringBuilder()
                 builder.append(parseTime(hourOfDay)).append(":").append(parseTime(minute))
                 hour_edit.text = builder.toString()
-            })
+            }, parseStringDateToHour(hour_edit.text.toString()))
         }
     }
 
-    override fun onEditEvent(event: Event) {
+    private fun showEditEventDialog(event: Event) {
         if (roleId == Auth.CEO_ROLE) {
             val layout = layoutInflater.inflate(R.layout.dialog_view_event, null)
 
@@ -217,45 +239,70 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
             val name_edit = layout.findViewById<EditText>(R.id.edit_event_name)
             val description_edit = layout.findViewById<EditText>(R.id.edit_event_description)
 
-            AlertDialog.Builder(context)
+            val dialog = AlertDialog.Builder(context)
                     .setView(layout)
-                    .setPositiveButton(context?.getString(R.string.modify)) { _, _ ->
-
-                        val date = SAVE_DATE_FORMAT.parse("${date_edit.text} ${hour_edit.text}").time
-
-                        val newEvent = Event(
-                                date,
-                                name_edit.text.toString(),
-                                description_edit.text.toString())
-                        newEvent.id = event.id
-
-                        if (!newEvent.equals(event))
-                            viewModel.modifyEvent(newEvent)
-                    }
+                    .setPositiveButton(context?.getString(R.string.modify), null)//Se establece en el OnShowListener para controlar el dismiss
                     .setNegativeButton(context?.getString(R.string.cancel)) { _, _ ->
                         //NOTHING TO DO
-                    }.show()
+                    }.create()
 
-            event.let {
-                date_edit.text = DISPLAY_DAY_FORMAT.format(Date(event.date))
-                hour_edit.text = DISPLAY_HOUR_FORMAT.format(Date(event.date))
-                name_edit.setText(event.name)
-                description_edit.setText(event.description)
+            dialog.setOnShowListener {
+                val button = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+                button.setOnClickListener {
+                    if (!TextUtils.isEmpty(date_edit.text.toString()) &&
+                            !TextUtils.isEmpty(hour_edit.text.toString()) &&
+                            !TextUtils.isEmpty(name_edit.text.toString())) {
+                        val date = SAVE_DATE_FORMAT.parse("${date_edit.text} ${hour_edit.text}").time
+
+                        event.date = date
+                        event.name = name_edit.text.toString()
+                        event.description = description_edit.text.toString()
+
+                        viewModel.modifyEvent(event)
+                        dialog.dismiss()
+
+                    } else
+                        showToast(getString(R.string.incomplete_fields))
+                }
             }
 
-            date_edit.setOnClickListener { showDatePicker(date_edit) }
+            dialog.show()
+
+            date_edit.text = DISPLAY_DAY_FORMAT.format(Date(event.date))
+            hour_edit.text = DISPLAY_HOUR_FORMAT.format(Date(event.date))
+            name_edit.setText(event.name)
+            description_edit.setText(event.description)
+
+            date_edit.setOnClickListener {
+                showDatePicker(date_edit, parseStringDateToDate(date_edit.text.toString()))
+            }
 
             hour_edit.setOnClickListener {
                 showTimePicker(TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                     val builder = StringBuilder()
                     builder.append(parseTime(hourOfDay)).append(":").append(parseTime(minute))
                     hour_edit.text = builder.toString()
-                })
+                }, parseStringDateToHour(hour_edit.text.toString()))
             }
         }
     }
 
-    //region Dialogsç
+    private fun parseStringDateToDate(string: String): Calendar? {
+        if (TextUtils.isEmpty(string)) return null
+        val cal = Calendar.getInstance()
+        cal.set(Integer.parseInt(string.split("/")[2]),
+                Integer.parseInt(string.split("/")[1]) - 1,
+                Integer.parseInt(string.split("/")[0]))
+        return cal
+    }
+
+    private fun parseStringDateToHour(string: String): Calendar? {
+        if (TextUtils.isEmpty(string)) return null
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(string.split(":")[0]))
+        calendar.set(Calendar.MINUTE, Integer.parseInt(string.split(":")[1]))
+        return calendar
+    }
 
     private fun showRemoveConfirmDialog(itemPosition: Int) {
         val alertDialog = AlertDialog.Builder(context)
@@ -273,14 +320,13 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
         alertDialog.setCancelable(false)
         alertDialog.show()
     }
-    //endregion
 
-    private fun showDatePicker(et: TextView) {
-        // Use the current date as the default date in the picker
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+    private fun showDatePicker(et: TextView, c: Calendar?) {
+        var cal = Calendar.getInstance()
+        c?.let { cal = c }
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it
         DatePickerDialog(context, { _, i, i1, i2 ->
@@ -292,13 +338,15 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
     }
 
 
-    private fun showTimePicker(listener: TimePickerDialog.OnTimeSetListener) {
-        val c = Calendar.getInstance()
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        val minute = c.get(Calendar.MINUTE)
+    private fun showTimePicker(listener: TimePickerDialog.OnTimeSetListener, c: Calendar?) {
+        var cal = Calendar.getInstance()
+        c?.let { cal = c }
+        val hour = cal.get(Calendar.HOUR_OF_DAY)
+        val minute = cal.get(Calendar.MINUTE)
         TimePickerDialog(context, listener, hour, minute, true).show()
     }
 
+    //endregion
 
     private fun parseTime(oldTime: Int): String =
             if (oldTime < 10) "0$oldTime" else oldTime.toString()

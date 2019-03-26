@@ -45,11 +45,11 @@ public class ComponentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ComponentItemViewHolder) {
-            ((ComponentItemViewHolder) holder).component_name.setText(components.get(position).getName());
+            ((ComponentItemViewHolder) holder).component_name.setText(components.get(holder.getAdapterPosition()).getName());
 
             ((ComponentItemViewHolder) holder).container.setOnLongClickListener(v -> {
                 if (componentEditListener != null){
-                    componentEditListener.onEditComponent(components.get(position));
+                    componentEditListener.onEditComponent(components.get(holder.getAdapterPosition()));
                     return true;
                 }
                 return false;

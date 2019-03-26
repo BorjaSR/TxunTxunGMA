@@ -172,7 +172,7 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
                 .setView(layout)
                 .setPositiveButton(getString(R.string.add)) { _, _ ->
                     viewModel.saveRate(Rate(
-                            layout.findViewById<EditText>(R.id.edit_rate_text).text.toString(),
+                            layout.findViewById<EditText>(R.id.edit_rate_name).text.toString(),
                             layout.findViewById<EditText>(R.id.edit_rate_amount).text.toString().toDouble()
                     ))
                 }
@@ -181,13 +181,13 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
                 }
                 .show()
 
-        layout.findViewById<View>(R.id.edit_rate_text).requestFocus()
+        layout.findViewById<View>(R.id.edit_rate_name).requestFocus()
     }
 
     private fun showModifyRate(rate: Rate) {
         // Create EditText
         val layout = layoutInflater.inflate(R.layout.dialog_view_rate, null)
-        val description_edit = layout.findViewById<EditText>(R.id.edit_rate_text)
+        val description_edit = layout.findViewById<EditText>(R.id.edit_rate_name)
         val amount_edit = layout.findViewById<EditText>(R.id.edit_rate_amount)
 
         description_edit.setText(rate.description)
@@ -206,7 +206,7 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
                 }
                 .show()
 
-        layout.findViewById<View>(R.id.edit_rate_text).requestFocus()
+        layout.findViewById<View>(R.id.edit_rate_name).requestFocus()
     }
 
     private fun showRemoveConfirmDialog(itemPosition: Int) {

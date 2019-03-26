@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_event"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
     android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
     android:layout_marginBottom="8dp"
     card_view:cardBackgroundColor="@color/white"
     card_view:cardCornerRadius="4dp"
@@ -17,87 +17,107 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:minHeight="100dp">
-
-    <LinearLayout
-        android:layout_width="90dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/event_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/charcoal"
-            android:textSize="35sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="-5dp"
-            tools:text="24"/>
-
-        <TextView
-            android:id="@+id/event_day_of_week"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/charcoal"
-            android:textSize="14sp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:layout_marginBottom="13dp"
-            tools:text="Viernes"/>
-
-        <TextView
-            android:id="@+id/event_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_oval_blue"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="1dp"
-            tools:text="Septiembre"/>
-
-    </LinearLayout>
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp">
+            android:minHeight="100dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/event_name"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/event_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-5dp"
+                    android:textColor="@color/charcoal"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="24" />
+
+                <TextView
+                    android:id="@+id/event_day_of_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColor="@color/charcoal"
+                    android:textSize="14sp"
+                    tools:text="Viernes" />
+
+                <TextView
+                    android:id="@+id/event_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_oval_blue"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="1dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:text="Septiembre" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Nomre de mi evento"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/event_hour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="italic"
-                tools:text="20:00"
-                android:textColor="@color/charcoal"
-                android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/event_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        tools:text="Nomre de mi evento" />
 
-            <TextView
-                android:id="@+id/event_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:maxLines="3"
-                android:ellipsize="end"
-                tools:text="Mi texto largo apto para una descripcion de un evento del txun txun donde se haran cosas y se hablaran de cosas y se pensaran cosas para hacer mas cosas un futuro."
-                android:textColor="@color/gray"
-                android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/event_hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/charcoal"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    tools:text="20:00" />
 
+                <TextView
+                    android:id="@+id/event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:textColor="@color/gray"
+                    android:textSize="13sp"
+                    tools:text="Mi texto largo apto para una descripcion de un evento del txun txun donde se haran cosas y se hablaran de cosas y se pensaran cosas para hacer mas cosas un futuro." />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/activate_alarm"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?android:selectableItemBackground"
+                        android:padding="8dp"
+                        android:src="@drawable/bell_off_outline" />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </android.support.v7.widget.CardView>

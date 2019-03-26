@@ -129,6 +129,7 @@ public class FirestoreSource implements IFirestoreSource {
     @Override
     public void getEvents(OnCollectionChangedListener<Event> callback) {
         db.collection(EVENTS_COLLECTION)
+                .whereGreaterThan("date", System.currentTimeMillis())
                 .orderBy("date", Query.Direction.ASCENDING)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
@@ -184,6 +185,25 @@ public class FirestoreSource implements IFirestoreSource {
                         for (DocumentSnapshot doc : value)
                             releases.add(new Release(doc.getId(), doc));
                         callback.onCollectionChange(releases);
+                    }
+                });
+    }
+
+    @Override
+    public void getEvent(String eventId, OnDocumentLoadedListener<Event> callback) {
+        db.collection(EVENTS_COLLECTION)
+                .document(eventId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            callback.onDocumentLoaded(new Event(eventId, document));
+                        } else {
+                            callback.onDocumentLoaded(null);
+                        }
+                    } else {
+                        callback.onDocumentLoaded(null);
                     }
                 });
     }
@@ -281,10 +301,10 @@ public class FirestoreSource implements IFirestoreSource {
 
     @Override
     public void updateEvent(Event event, OnDocumentSavedListener<Event> listener) {
-        Map<String, Object> componentMap = event.getMap();
+        Map<String, Object> eventMap = event.getMap();
 
         db.collection(EVENTS_COLLECTION).document(Objects.requireNonNull(event.getId()))
-                .set(componentMap)
+                .set(eventMap)
                 .addOnSuccessListener(aVoid -> listener.onDocumentSaved(event))
                 .addOnFailureListener(e -> listener.onDocumentSaved(null));
     }

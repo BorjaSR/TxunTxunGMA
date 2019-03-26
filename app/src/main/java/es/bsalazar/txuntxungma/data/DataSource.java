@@ -51,4 +51,14 @@ public interface DataSource {
     void updateRelease(Release release, FirestoreSource.OnDocumentSavedListener<Release> callback);
 
     void deleteRelease(String releaseId);
+
+    Integer saveAlarmId(String objectId);
+
+    Integer getAlarmId(String objectId);
+
+    boolean removeAlarmId(String objectId);
+
+    Integer getAndIncrementAlarmId();
+
+    void getEvent(String eventId, DataCallback<Event, BaseError> callback);
 }

@@ -9,4 +9,14 @@ public interface IPreferencesSource {
     Auth getLoginData();
 
     boolean removeLoginData();
+
+    void saveAlarmId(String objectId, Integer alarmId);
+
+    Integer getAlarmId(String objectId);
+
+    boolean removeAlarmId(String objectId);
+
+    Integer getActualAlarmId();
+
+    void incrementAlarmId(Integer actualAlarmID);
 }

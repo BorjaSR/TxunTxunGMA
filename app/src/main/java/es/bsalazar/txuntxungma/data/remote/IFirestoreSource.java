@@ -17,6 +17,8 @@ public interface IFirestoreSource {
 
     void getReleases(final FirestoreSource.OnCollectionChangedListener<Release> callback);
 
+    void getEvent(String eventId, final FirestoreSource.OnDocumentLoadedListener<Event> callback);
+
     void saveComponent(final Component component, final FirestoreSource.OnDocumentSavedListener<Component> listener);
 
     void saveRate(final Rate rate, final FirestoreSource.OnDocumentSavedListener<Rate> listener);

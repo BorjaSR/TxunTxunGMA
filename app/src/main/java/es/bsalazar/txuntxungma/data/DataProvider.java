@@ -1,5 +1,7 @@
 package es.bsalazar.txuntxungma.data;
 
+import java.util.List;
+
 import es.bsalazar.txuntxungma.data.remote.FirestoreSource;
 import es.bsalazar.txuntxungma.domain.entities.Auth;
 import es.bsalazar.txuntxungma.domain.entities.BaseError;
@@ -50,9 +52,9 @@ public class DataProvider implements DataSource {
 
     @Override
     public void removeLoginData(DataCallback<Boolean, BaseError> callback) {
-        try{
+        try {
             callback.onSuccess(preferencesSource.removeLoginData());
-        }catch (Exception e){
+        } catch (Exception e) {
             callback.onFailure(BaseError.getStandardError());
         }
     }
@@ -104,7 +106,31 @@ public class DataProvider implements DataSource {
 
     @Override
     public void getEvents(FirestoreSource.OnCollectionChangedListener<Event> callback) {
-        firestoreManager.getEvents(callback);
+        firestoreManager.getEvents(new FirestoreSource.OnCollectionChangedListener<Event>() {
+            @Override
+            public void onCollectionChange(List<Event> collection) {
+                for(Event event : collection)
+                    event.setAlarmActivated(getAlarmId(event.getId()) != -1);
+
+                callback.onCollectionChange(collection);
+            }
+
+            @Override
+            public void onDocumentAdded(int index, Event document) {
+                callback.onDocumentAdded(index, document);
+            }
+
+            @Override
+            public void onDocumentChanged(int index, Event document) {
+                callback.onDocumentChanged(index, document);
+
+            }
+
+            @Override
+            public void onDocumentRemoved(int index, Event document) {
+                callback.onDocumentRemoved(index, document);
+            }
+        });
     }
 
     @Override
@@ -140,5 +166,34 @@ public class DataProvider implements DataSource {
     @Override
     public void deleteRelease(String releaseId) {
         firestoreManager.deleteRelease(releaseId);
+    }
+
+    @Override
+    public Integer saveAlarmId(String objectId) {
+        int id = getAndIncrementAlarmId();
+        preferencesSource.saveAlarmId(objectId, id);
+        return id;
+    }
+
+    @Override
+    public Integer getAlarmId(String objectId) {
+        return preferencesSource.getAlarmId(objectId);
+    }
+
+    @Override
+    public boolean removeAlarmId(String objectId) {
+        return preferencesSource.removeAlarmId(objectId);
+    }
+
+    @Override
+    public Integer getAndIncrementAlarmId() {
+        int id = preferencesSource.getActualAlarmId();
+        preferencesSource.incrementAlarmId(id);
+        return id;
+    }
+
+    @Override
+    public void getEvent(String eventId, DataCallback<Event, BaseError> callback) {
+        firestoreManager.getEvent(eventId, callback::onSuccess);
     }
 }

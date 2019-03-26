@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_release_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="30"
+    android:padding="16dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:transitionName="@string/transitionName_cardBackground"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        card_view:contentPadding="6dp"
+        tools:targetApi="lollipop">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/release_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Comunicado" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:background="@color/colorPrimaryL"/>
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_light"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                android:layout_marginTop="4dp"
+                tools:text="27/03/2019" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/release_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/charcoal"
+                    android:textSize="13sp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    tools:text="Mi o apton de u Mi texto largo aphacer mas cosas un futuro." />
+
+
+            </ScrollView>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

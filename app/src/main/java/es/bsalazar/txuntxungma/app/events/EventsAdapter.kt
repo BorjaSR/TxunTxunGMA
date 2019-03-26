@@ -1,10 +1,14 @@
 package es.bsalazar.txuntxungma.app.events
 
+import android.annotation.TargetApi
+import android.content.Context
+import android.os.Build
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import es.bsalazar.txuntxungma.R
 import es.bsalazar.txuntxungma.domain.entities.Event
@@ -15,10 +19,12 @@ import kotlin.collections.ArrayList
 
 class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
 
+    lateinit var context: Context
+
     val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    val dayFormat : SimpleDateFormat = SimpleDateFormat("dd", Locale.getDefault())
-    val dayOfWeekFormat : SimpleDateFormat = SimpleDateFormat("EEEE", Locale("es", "ES"))
-    val monthFormat : SimpleDateFormat = SimpleDateFormat("MMMM", Locale("es", "ES"))
+    val dayFormat: SimpleDateFormat = SimpleDateFormat("dd", Locale.getDefault())
+    val dayOfWeekFormat: SimpleDateFormat = SimpleDateFormat("EEEE", Locale("es", "ES"))
+    val monthFormat: SimpleDateFormat = SimpleDateFormat("MMMM", Locale("es", "ES"))
 
     private var events: ArrayList<Event> = ArrayList()
     var onEditEvent: OnEditEvent? = null
@@ -28,26 +34,46 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
         return EventsViewHolder(v)
     }
 
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.context = recyclerView.context
+    }
+
     override fun getItemCount(): Int = events.size
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: EventsViewHolder, position: Int) {
+
+        val event = events[holder.adapterPosition]
 
         holder.container.setOnLongClickListener {
             if (onEditEvent != null) {
-                onEditEvent?.onEditEvent(events[holder.adapterPosition])
+                onEditEvent?.onEditEvent(event)
                 return@setOnLongClickListener true
             }
             false
         }
 
-        val date = Date(events[holder.adapterPosition].date)
+        val date = Date(event.date)
         holder.day.text = dayFormat.format(date)
         holder.month.text = monthFormat.format(date).firstUpperCase()
         holder.hour.text = hourFormat.format(date)
         holder.dayWeek.text = dayOfWeekFormat.format(date).firstUpperCase()
 
-        holder.name.text = events[holder.adapterPosition].name
-        holder.description.text = events[holder.adapterPosition].description
+        holder.name.text = event.name
+        holder.description.text = event.description
+
+        if (event.alarmActivated)
+            holder.activateAlarm.setImageDrawable(context.getDrawable(R.drawable.bell))
+        else
+            holder.activateAlarm.setImageDrawable(context.getDrawable(R.drawable.bell_off_outline))
+
+        holder.activateAlarm.setOnClickListener {
+            if (event.alarmActivated)
+                onEditEvent?.onDefuseAlarm(event)
+            else
+                onEditEvent?.onActivateAlarm(event)
+        }
     }
 
     fun setEvents(events: List<Event>) {
@@ -94,9 +120,14 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
         var dayWeek: TextView = itemView.findViewById(R.id.event_day_of_week)
         var name: TextView = itemView.findViewById(R.id.event_name)
         var description: TextView = itemView.findViewById(R.id.event_description)
+        var activateAlarm: ImageView = itemView.findViewById(R.id.activate_alarm)
     }
 
     interface OnEditEvent {
         fun onEditEvent(event: Event)
+
+        fun onActivateAlarm(event: Event)
+
+        fun onDefuseAlarm(event: Event)
     }
 }

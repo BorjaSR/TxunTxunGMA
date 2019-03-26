@@ -20,6 +20,7 @@ import es.bsalazar.txuntxungma.app.events.EventsFragment;
 import es.bsalazar.txuntxungma.app.home.HomeFragment;
 import es.bsalazar.txuntxungma.app.login.LoginActivity;
 import es.bsalazar.txuntxungma.app.rates.RatesFragment;
+import es.bsalazar.txuntxungma.app.releases.ReleasesFragment;
 import es.bsalazar.txuntxungma.utils.Constants;
 import es.bsalazar.txuntxungma.utils.ResultState;
 
@@ -99,6 +100,10 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
             case EVENTS_FRAGMENT:
                 newFragment = new EventsFragment();
                 getSupportActionBar().setTitle(getString(R.string.fragment_title_events));
+                break;
+            case RELEASES_FRAGMENT:
+                newFragment = new ReleasesFragment();
+                getSupportActionBar().setTitle(getString(R.string.fragment_title_releases));
                 break;
         }
 
