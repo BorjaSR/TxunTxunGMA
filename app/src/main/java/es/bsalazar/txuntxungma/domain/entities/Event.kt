@@ -4,15 +4,16 @@ import com.google.firebase.firestore.DocumentSnapshot
 import java.io.Serializable
 import java.util.HashMap
 
-class Event : Serializable {
+class Event() : Serializable {
 
     var id: String? = null
     var date: Long = 0
     var name: String? = null
     var description: String? = null
     var alarmActivated: Boolean = false
+    var compacted = true;
 
-    constructor(id: String, document: DocumentSnapshot) {
+    constructor(id: String, document: DocumentSnapshot) : this() {
         val event = document.toObject(this.javaClass)
         this.id = id
         this.description = event.description
@@ -20,9 +21,7 @@ class Event : Serializable {
         this.name = event.name
     }
 
-    constructor()
-
-    constructor(date: Long, name: String, description: String) {
+    constructor(date: Long, name: String, description: String) : this() {
         this.description = description
         this.name = name
         this.date = date

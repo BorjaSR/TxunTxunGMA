@@ -41,12 +41,24 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInitialFragment();
+
+        int NOTIFY_TYPE_INVOCATION = -1;
+        if (getIntent().getExtras() != null)
+            NOTIFY_TYPE_INVOCATION = getIntent().getExtras().getInt(Constants.EXTRA_KEY_NOTIFY_TYPE, -1);
+
+        switch (NOTIFY_TYPE_INVOCATION) {
+            case 0:
+                Bundle args = new Bundle();
+                args.putString(Constants.EXTRA_KEY_EVENTS_ID, getIntent().getExtras().getString(Constants.EXTRA_KEY_EVENTS_ID));
+                changeFragment(EVENTS_FRAGMENT, args);
+                break;
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(getTagFromActualFragment() != null &&
+        if (getTagFromActualFragment() != null &&
                 getSupportActionBar() != null &&
                 getTagFromActualFragment().equals(Constants.HOME_FRAGMENT))
             getSupportActionBar().setTitle(getString(R.string.fragment_title_home));
@@ -82,6 +94,10 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
     }
 
     private void changeFragment(Integer fragmentID) {
+        changeFragment(fragmentID, null);
+    }
+
+    private void changeFragment(Integer fragmentID, Bundle args) {
         BaseFragment newFragment = null;
 
         switch (fragmentID) {
@@ -109,8 +125,10 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> {
 
         if (newFragment != null) {
 
+            if (args != null) newFragment.setArguments(args);
+
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, newFragment,  newFragment.provideTag())
+                    .replace(R.id.fragment_container, newFragment, newFragment.provideTag())
                     .addToBackStack(null)
                     .commit();
         }

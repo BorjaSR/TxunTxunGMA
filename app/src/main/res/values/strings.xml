@@ -53,6 +53,7 @@
     <string name="alarm_activated_description">Se te avisara 2 horas antes del evento.</string>
     <string name="alarm_defused_description">Se ha eliminado el aviso</string>
     <string name="notification_description">Pulse para ver el evento</string>
+    <string name="not_events_yet">No hay eventos programados.</string>
 
     <string-array name="roles">
         <item>Componente</item>

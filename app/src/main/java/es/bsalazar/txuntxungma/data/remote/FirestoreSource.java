@@ -128,6 +128,7 @@ public class FirestoreSource implements IFirestoreSource {
 
     @Override
     public void getEvents(OnCollectionChangedListener<Event> callback) {
+//        final long[] lastModify = {0};
         db.collection(EVENTS_COLLECTION)
                 .whereGreaterThan("date", System.currentTimeMillis())
                 .orderBy("date", Query.Direction.ASCENDING)
@@ -137,13 +138,16 @@ public class FirestoreSource implements IFirestoreSource {
                         return;
                     }
 
+
                     if (value != null) {
                         for (DocumentChange documentChange : value.getDocumentChanges()) {
                             if (documentChange.getType() == DocumentChange.Type.ADDED) {
                                 callback.onDocumentAdded(documentChange.getNewIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));
 
                             } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
-                                callback.onDocumentChanged(documentChange.getNewIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));
+//                                if (System.currentTimeMillis() - lastModify[0] > 1000)
+                                    callback.onDocumentChanged(documentChange.getOldIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));
+//                                lastModify[0] = System.currentTimeMillis();
 
                             } else if (documentChange.getType() == DocumentChange.Type.REMOVED) {
                                 callback.onDocumentRemoved(documentChange.getOldIndex(), new Event(documentChange.getDocument().getId(), documentChange.getDocument()));

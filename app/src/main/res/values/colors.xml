@@ -6,6 +6,7 @@
     <color name="colorPrimaryL">#2736b9</color>
     <color name="colorPrimaryLight">#5079de</color>
     <color name="colorAccent">#94b3ff</color>
+    <color name="colorPrimaryAlmostWhite">#D7E0F7</color>
 
     <color name="white">#fff</color>
     <color name="gray_light">#A0A0A0</color>

@@ -9,9 +9,8 @@ public class Constants {
     public static final String RATES_FRAGMENT = "RATES_FRAGMENT";
 
     public static final String EXTRA_KEY_RELEASE = "EXTRA_KEY_RELEASE";
+    public static final String EXTRA_KEY_NOTIFY_TYPE =  "EXTRA_KEY_NOTIFY_TYPE";
     public static final String EXTRA_KEY_EVENTS_ID =  "EXTRA_KEY_EVENTS_ID";
-    public static final String EXTRA_KEY_EVENTS_NAME = "EXTRA_KEY_EVENTS_NAME";
-    public static final String EXTRA_KEY_EVENTS_DESCRIPTION = "EXTRA_KEY_EVENTS_DESCRIPTION";
-    public static final String EXTRA_KEY_EVENTS_HOUR = "EXTRA_KEY_EVENTS_HOUR";
-    public static final String EXTRA_KEY_EVENTS_ALARM_ID = "EXTRA_KEY_EVENTS_ALARM_ID";
+
+    public static final int NOTIFY_TYPE_EVENT = 0;
 }

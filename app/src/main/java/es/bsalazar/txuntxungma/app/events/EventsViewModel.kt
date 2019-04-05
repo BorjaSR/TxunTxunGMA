@@ -77,6 +77,16 @@ class EventsViewModel(val context: Context, dataSource: DataSource) : BaseViewMo
 
     fun deleteEvent(event: Event) = dataSource.deleteEvent(event.id)
 
+    fun compactChangeEvent(position: Int, eventId: String){
+        for (i in 0 until eventsLiveData.value?.size!!) {
+            if (eventsLiveData.value!![i].id.equals(eventId)) {
+                eventsLiveData.value!![i].compacted = !eventsLiveData.value!![i].compacted
+                modifyEventLiveData.value = FirebaseResponse(position, eventsLiveData.value!![i])
+                break
+            }
+        }
+    }
+
     fun activateAlarmForEvent(event: Event) {
         var alarmId = dataSource.getAlarmId(event.id)
         if (alarmId == -1)//If not exist alarm previously
@@ -144,6 +154,8 @@ class EventsViewModel(val context: Context, dataSource: DataSource) : BaseViewMo
                             event.date - (2 * 60 * 60 * 1000), //2 horas antes
                             pIntent
                     )
+
+                    event.alarmActivated = true
                 }
             }
         }
@@ -165,6 +177,8 @@ class EventsViewModel(val context: Context, dataSource: DataSource) : BaseViewMo
                     event.date - (2 * 60 * 60 * 1000), //2 horas antes
                     pIntent
             )
+
+            event.alarmActivated = true
         }
     }
 

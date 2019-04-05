@@ -21,7 +21,6 @@ import es.bsalazar.txuntxungma.domain.entities.Event
 import es.bsalazar.txuntxungma.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.contracts.contract
 
 class AlarmBroadcastReceiver : BroadcastReceiver() {
 
@@ -35,8 +34,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
         dataSource.getEvent(eventID, object : DataCallback<Event, BaseError>{
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            override fun onSuccess(response: Event?) {
-                response?.let { launchNotification(response) }
+            override fun onSuccess(event: Event?) {
+                event?.let { launchNotification(event) }
             }
 
             override fun onFailure(errorBase: BaseError?) {
@@ -49,6 +48,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     fun launchNotification(event: Event){
         val mainIntent = Intent(mContext, MainActivity::class.java)
+        mainIntent.putExtra(Constants.EXTRA_KEY_NOTIFY_TYPE, Constants.NOTIFY_TYPE_EVENT)
+        mainIntent.putExtra(Constants.EXTRA_KEY_EVENTS_ID, event.id)
 
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(mContext).run {
             addNextIntentWithParentStack(mainIntent)

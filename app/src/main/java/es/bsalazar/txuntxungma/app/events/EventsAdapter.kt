@@ -1,5 +1,6 @@
 package es.bsalazar.txuntxungma.app.events
 
+import android.animation.Animator
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
@@ -16,6 +17,13 @@ import es.bsalazar.txuntxungma.firstUpperCase
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import android.animation.ValueAnimator
+import android.animation.ArgbEvaluator
+import android.support.v4.content.ContextCompat
+import android.text.TextUtils
+import android.view.animation.Animation
+import android.widget.Toast
+
 
 class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
 
@@ -26,8 +34,10 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
     val dayOfWeekFormat: SimpleDateFormat = SimpleDateFormat("EEEE", Locale("es", "ES"))
     val monthFormat: SimpleDateFormat = SimpleDateFormat("MMMM", Locale("es", "ES"))
 
-    private var events: ArrayList<Event> = ArrayList()
     var onEditEvent: OnEditEvent? = null
+    var notificationEventId = ""
+
+    private var events: ArrayList<Event> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventsViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_event, parent, false);
@@ -46,6 +56,15 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
 
         val event = events[holder.adapterPosition]
 
+        if (event.id!! == notificationEventId) {
+            animateBackground(holder.container)
+            notificationEventId = ""
+        }
+
+        holder.container.setOnClickListener {
+            onEditEvent?.onCompactChangeEvent(holder.adapterPosition, event.id!!)
+        }
+
         holder.container.setOnLongClickListener {
             if (onEditEvent != null) {
                 onEditEvent?.onEditEvent(event)
@@ -63,6 +82,14 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
         holder.name.text = event.name
         holder.description.text = event.description
 
+        if (event.compacted) {
+            holder.description.maxLines = 3
+            holder.description.ellipsize = TextUtils.TruncateAt.END;
+        } else {
+            holder.description.maxLines = Integer.MAX_VALUE
+            holder.description.ellipsize = null;
+        }
+
         if (event.alarmActivated)
             holder.activateAlarm.setImageDrawable(context.getDrawable(R.drawable.bell))
         else
@@ -74,6 +101,17 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
             else
                 onEditEvent?.onActivateAlarm(event)
         }
+    }
+
+    fun animateBackground(view: CardView) {
+        val colorFrom = ContextCompat.getColor(context, R.color.white)
+        val colorTo = ContextCompat.getColor(context, R.color.colorPrimaryAlmostWhite)
+        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
+        colorAnimation.duration = 200
+        colorAnimation.repeatCount = 3
+        colorAnimation.repeatMode = ValueAnimator.REVERSE
+        colorAnimation.addUpdateListener { animator -> view.setCardBackgroundColor(animator.animatedValue as Int) }
+        colorAnimation.start()
     }
 
     fun setEvents(events: List<Event>) {
@@ -89,11 +127,33 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
         }
     }
 
+    var timerID = -1
     internal fun modifyEvent(index: Int, event: Event) {
         if (index < events.size) {
             events.set(index, event)
             notifyItemChanged(index)
+
+//            if (timerID != index) {
+//                MyTimer(index, event, this::checkPositionOfEvent).start()
+//                timerID = index
+//            }
         }
+    }
+
+    private fun checkPositionOfEvent(index: Int, event: Event) {
+        var newPosition = 0;
+        for (i in 0..events.size) {
+            if (event.date < events[i].date) {
+                newPosition = i
+                break
+            }
+        }
+
+        if (newPosition != index) {
+            if (newPosition > index) newPosition--
+            notifyItemMoved(index, newPosition)
+        }
+        timerID = -1
     }
 
     internal fun removeEvent(index: Int, event: Event) {
@@ -124,10 +184,21 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
     }
 
     interface OnEditEvent {
+
+        fun onCompactChangeEvent(position: Int, eventId: String)
+
         fun onEditEvent(event: Event)
 
         fun onActivateAlarm(event: Event)
 
         fun onDefuseAlarm(event: Event)
+    }
+
+    class MyTimer(val index: Int, val event: Event, val function: (Int, Event) -> (Unit)) : Thread() {
+
+        override fun run() {
+            Thread.sleep(500)
+            function(index, event)
+        }
     }
 }

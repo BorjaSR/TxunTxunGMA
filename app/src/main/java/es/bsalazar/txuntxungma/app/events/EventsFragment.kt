@@ -22,10 +22,13 @@ import es.bsalazar.txuntxungma.domain.entities.Auth
 import es.bsalazar.txuntxungma.domain.entities.Event
 import es.bsalazar.txuntxungma.nonNull
 import es.bsalazar.txuntxungma.observe
+import es.bsalazar.txuntxungma.utils.Constants
 import es.bsalazar.txuntxungma.utils.ShowState
 import kotlinx.android.synthetic.main.fragment_events.*
+import java.text.FieldPosition
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEvent {
 
@@ -34,8 +37,9 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
     private val SAVE_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
     private var scheduleAnim = false
-    private var adapter: EventsAdapter? = null
+    private var adapter: EventsAdapter = EventsAdapter()
     private var roleId = Auth.COMPONENT_ROLE
+    private var notificationEventId = ""
 
     override fun provideTag(): String = "EVENTS_FRAGMENT"
 
@@ -58,6 +62,7 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
 
         setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        arguments?.let { notificationEventId = it.getString(Constants.EXTRA_KEY_EVENTS_ID) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -119,15 +124,21 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
     private fun initRecycler() {
         events_recycler.setHasFixedSize(true)
         events_recycler.layoutManager = LinearLayoutManager(mContext)
-        adapter = EventsAdapter()
         events_recycler.adapter = adapter
-        adapter?.onEditEvent = this
+
+        adapter.notificationEventId = notificationEventId
+        adapter.onEditEvent = this
     }
 
     private fun presentEvents(eventList: List<Event>) {
-        if (scheduleAnim) events_recycler.scheduleLayoutAnimation()
-        scheduleAnim = false
-        adapter?.setEvents(eventList)
+        if(eventList.size > 0){
+            if (scheduleAnim) events_recycler.scheduleLayoutAnimation()
+            scheduleAnim = false
+            adapter.setEvents(eventList)
+            empty_list.visibility = View.GONE
+
+        } else
+            empty_list.visibility = View.VISIBLE
     }
 
     private fun handleLoading(showState: ShowState) {
@@ -163,6 +174,8 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
             adapter?.removeEvent(response.index, response.response)
 
     //region Implements Adapter
+
+    override fun onCompactChangeEvent(position: Int, eventId: String) = viewModel.compactChangeEvent(position, eventId)
 
     override fun onEditEvent(event: Event) = showEditEventDialog(event)
 
