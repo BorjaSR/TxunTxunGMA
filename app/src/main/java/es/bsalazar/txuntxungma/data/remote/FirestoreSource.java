@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import es.bsalazar.txuntxungma.domain.entities.Component;
 import es.bsalazar.txuntxungma.domain.entities.Event;
 import es.bsalazar.txuntxungma.domain.entities.Rate;
 import es.bsalazar.txuntxungma.domain.entities.Release;
+import es.bsalazar.txuntxungma.domain.entities.ReleaseComponentsList;
 
 public class FirestoreSource implements IFirestoreSource {
 
@@ -27,6 +29,7 @@ public class FirestoreSource implements IFirestoreSource {
     private static final String RATES_COLLECTION = "rates";
     private static final String EVENTS_COLLECTION = "events";
     private static final String RELEASES_COLLECTION = "releases";
+    private static final String RELEASE_COMPONENTS_LIST_COLLECTION = "release_components_list";
 
     private FirebaseFirestore db;
     private static FirestoreSource instance;
@@ -193,6 +196,26 @@ public class FirestoreSource implements IFirestoreSource {
                 });
     }
 
+//    @Override
+//    public void getReleaseComponentList(String releaseId, OnDocumentLoadedListener<ReleaseComponentsList> callback) {
+//
+//        db.collection(RELEASE_COMPONENTS_LIST_COLLECTION)
+//                .whereEqualTo("releaseId", releaseId)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        QuerySnapshot query = task.getResult();
+//                        if (query.getDocuments().size() == 1){
+//                            callback.onDocumentLoaded(new ReleaseComponentsList(releaseId, query.getDocuments().get(0)));
+//                        } else {
+//                            callback.onDocumentLoaded(null);
+//                        }
+//                    } else {
+//                        callback.onDocumentLoaded(null);
+//                    }
+//                });
+//    }
+
     @Override
     public void getEvent(String eventId, OnDocumentLoadedListener<Event> callback) {
         db.collection(EVENTS_COLLECTION)
@@ -279,6 +302,21 @@ public class FirestoreSource implements IFirestoreSource {
                 });
     }
 
+//    @Override
+//    public void saveReleaseComponentList(ReleaseComponentsList releaseComponentsList, OnDocumentSavedListener<ReleaseComponentsList> listener) {
+//        Map<String, Object> releaseMap = releaseComponentsList.getMap();
+//
+//        db.collection(RELEASE_COMPONENTS_LIST_COLLECTION)
+//                .add(releaseMap)
+//                .addOnSuccessListener(documentReference -> {
+//                    releaseComponentsList.setId(documentReference.getId());
+//                    listener.onDocumentSaved(releaseComponentsList);
+//                })
+//                .addOnFailureListener(e -> {
+//                    listener.onDocumentSaved(null);
+//                    Log.w(TAG, "Error writing document", e);
+//                });
+//    }
     //endregion
 
     //region UPDATE
@@ -322,6 +360,17 @@ public class FirestoreSource implements IFirestoreSource {
                 .addOnSuccessListener(aVoid -> listener.onDocumentSaved(release))
                 .addOnFailureListener(e -> listener.onDocumentSaved(null));
     }
+
+//    @Override
+//    public void updateReleaseComponentList(ReleaseComponentsList releaseComponentsList, OnDocumentSavedListener<ReleaseComponentsList> listener) {
+//
+//        Map<String, Object> releaseComponentsListMap = releaseComponentsList.getMap();
+//
+//        db.collection(RELEASE_COMPONENTS_LIST_COLLECTION).document(Objects.requireNonNull(releaseComponentsList.getId()))
+//                .set(releaseComponentsListMap)
+//                .addOnSuccessListener(aVoid -> listener.onDocumentSaved(releaseComponentsList))
+//                .addOnFailureListener(e -> listener.onDocumentSaved(null));
+//    }
 
     //endregion
 

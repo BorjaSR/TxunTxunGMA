@@ -15,7 +15,7 @@
     card_view:contentPadding="6dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -55,6 +55,17 @@
             android:ellipsize="end"
             tools:text="Mi texto largo apto para una descripcion de u Mi texto largo apto para una descripcion de u Mi texto largo apto para una descripcion de un evento del txun txun donde se haran cosas y se hablaran de cosas y se pensaran cosas para hacer mas cosas un futuro." />
 
+        <TextView
+          android:id="@+id/sign_up_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          android:textColor="@color/colorPrimaryLight"
+          android:text="@string/sign_up"
+          android:layout_gravity="end"
+          android:padding="5dp"
+          android:visibility="gone"
+          tools:visibility="visible"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

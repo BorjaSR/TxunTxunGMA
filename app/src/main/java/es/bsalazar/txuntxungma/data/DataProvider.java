@@ -1,5 +1,6 @@
 package es.bsalazar.txuntxungma.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.bsalazar.txuntxungma.data.remote.FirestoreSource;
@@ -12,6 +13,7 @@ import es.bsalazar.txuntxungma.data.remote.IFirestoreSource;
 import es.bsalazar.txuntxungma.domain.entities.Event;
 import es.bsalazar.txuntxungma.domain.entities.Rate;
 import es.bsalazar.txuntxungma.domain.entities.Release;
+import es.bsalazar.txuntxungma.domain.entities.ReleaseComponentsList;
 import es.bsalazar.txuntxungma.domain.requests.AuthRequest;
 
 public class DataProvider implements DataSource {

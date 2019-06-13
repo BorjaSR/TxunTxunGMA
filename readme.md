@@ -7,6 +7,8 @@ Android application for the management of an association of friends as well as t
 * MVVM
 * Clean architecture
 * SOLID
+* Alarm Manager
+* Notification Manager
 
 ### Actual version
 1.0

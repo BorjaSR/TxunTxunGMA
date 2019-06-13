@@ -4,6 +4,7 @@ import es.bsalazar.txuntxungma.domain.entities.Component;
 import es.bsalazar.txuntxungma.domain.entities.Event;
 import es.bsalazar.txuntxungma.domain.entities.Rate;
 import es.bsalazar.txuntxungma.domain.entities.Release;
+import es.bsalazar.txuntxungma.domain.entities.ReleaseComponentsList;
 
 public interface IFirestoreSource {
 
@@ -17,6 +18,8 @@ public interface IFirestoreSource {
 
     void getReleases(final FirestoreSource.OnCollectionChangedListener<Release> callback);
 
+//    void getReleaseComponentList(String releaseId, final FirestoreSource.OnDocumentLoadedListener<ReleaseComponentsList> callback);
+
     void getEvent(String eventId, final FirestoreSource.OnDocumentLoadedListener<Event> callback);
 
     void saveComponent(final Component component, final FirestoreSource.OnDocumentSavedListener<Component> listener);
@@ -27,6 +30,8 @@ public interface IFirestoreSource {
 
     void saveRelease(final Release release, final FirestoreSource.OnDocumentSavedListener<Release> listener);
 
+//    void saveReleaseComponentList(final ReleaseComponentsList releaseComponentsList, final FirestoreSource.OnDocumentSavedListener<ReleaseComponentsList> listener);
+
     void updateComponent(final Component component, final FirestoreSource.OnDocumentSavedListener<Component> listener);
 
     void updateRate(final Rate rate, final FirestoreSource.OnDocumentSavedListener<Rate> listener);
@@ -34,6 +39,8 @@ public interface IFirestoreSource {
     void updateEvent(final Event event, final FirestoreSource.OnDocumentSavedListener<Event> listener);
 
     void updateRelease(final Release release, final FirestoreSource.OnDocumentSavedListener<Release> listener);
+
+//    void updateReleaseComponentList(final ReleaseComponentsList releaseComponentsList, final FirestoreSource.OnDocumentSavedListener<ReleaseComponentsList> listener);
 
     void deleteComponent(String componentId);
 

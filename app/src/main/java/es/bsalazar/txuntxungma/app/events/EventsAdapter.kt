@@ -1,6 +1,5 @@
 package es.bsalazar.txuntxungma.app.events
 
-import android.animation.Animator
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build

@@ -25,10 +25,8 @@ import es.bsalazar.txuntxungma.observe
 import es.bsalazar.txuntxungma.utils.Constants
 import es.bsalazar.txuntxungma.utils.ShowState
 import kotlinx.android.synthetic.main.fragment_events.*
-import java.text.FieldPosition
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEvent {
 
@@ -165,13 +163,13 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
     }
 
     fun addEvent(response: FirebaseResponse<Event>) =
-            adapter?.addEvent(response.index, response.response)
+            adapter.addEvent(response.index, response.response)
 
     fun modifyEvent(response: FirebaseResponse<Event>) =
-            adapter?.modifyEvent(response.index, response.response)
+            adapter.modifyEvent(response.index, response.response)
 
     fun deleteEvent(response: FirebaseResponse<Event>) =
-            adapter?.removeEvent(response.index, response.response)
+            adapter.removeEvent(response.index, response.response)
 
     //region Implements Adapter
 
@@ -322,12 +320,12 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
                 .setTitle(getString(R.string.remove_confirm_dialog_title))
                 .setMessage(getString(R.string.remove_confirm_dialog_message))
                 .setPositiveButton(getString(R.string.continue_text)) { _, _ ->
-                    adapter?.let {
+                    adapter.let {
                         viewModel.deleteEvent(it.getItem(itemPosition))
                     }
                 }
                 .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                    adapter?.notifyItemChanged(itemPosition)
+                    adapter.notifyItemChanged(itemPosition)
                 }.create()
 
         alertDialog.setCancelable(false)
