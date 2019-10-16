@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import es.bsalazar.txuntxungma.R
+import es.bsalazar.txuntxungma.app.base.lists.BaseAdapter
 import es.bsalazar.txuntxungma.domain.entities.Rate
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RatesAdapter : RecyclerView.Adapter<RatesAdapter.RateViewHolder>() {
+class RatesAdapter : BaseAdapter<Rate>() {
 
-    private var rates: ArrayList<Rate> = ArrayList()
     var onEditRate: OnEditRate? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RateViewHolder {
@@ -22,55 +22,25 @@ class RatesAdapter : RecyclerView.Adapter<RatesAdapter.RateViewHolder>() {
         return RateViewHolder(v)
     }
 
-    override fun getItemCount(): Int = rates.size
+    override fun getItemCount(): Int = list.size
 
-    override fun onBindViewHolder(holder: RateViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as RateViewHolder).let {
+            holder.container.setOnLongClickListener {
+                onEditRate?.onEditRate(list[holder.adapterPosition])
+                return@setOnLongClickListener true
+            }
 
-        holder.container.setOnLongClickListener {
-            onEditRate?.onEditRate(rates[holder.adapterPosition])
-            return@setOnLongClickListener true
-        }
+            holder.description.text = list[holder.adapterPosition].description
 
-        holder.description.text = rates[holder.adapterPosition].description
-
-        val formatoImporte = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
-        holder.amount.text = formatoImporte.format(rates[holder.adapterPosition].amount)
-    }
-
-    fun setRates(rates: List<Rate>) {
-        this.rates = rates as ArrayList<Rate>
-        notifyDataSetChanged()
-    }
-
-    internal fun addRate(index: Int, rate: Rate) {
-        if (!containRate(rate)) {
-            rates.add(index, rate)
-            notifyItemInserted(index)
+            val formatoImporte = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
+            holder.amount.text = formatoImporte.format(list[holder.adapterPosition].amount)
         }
     }
 
-    internal fun modifyRate(index: Int, rate: Rate) {
-        if (index < rates.size) {
-            rates.set(index, rate)
-            notifyItemChanged(index)
-        }
-    }
+    override fun areSameItem(item: Rate, item2: Rate) = item.id == item2.id
 
-    internal fun removeRate(index: Int, rate: Rate) {
-        if (index < rates.size && containRate(rate)) {
-            rates.removeAt(index)
-            notifyItemRemoved(index)
-        }
-    }
-
-    private fun containRate(rate: Rate): Boolean {
-        for (component1 in rates)
-            if (rate.id == component1.getId())
-                return true
-        return false
-    }
-
-    fun getItem(position: Int): Rate = rates[position]
+    fun getItem(position: Int) = list[position]
 
     inner class RateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var container: CardView = itemView.findViewById(R.id.container)

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/OwnProjects-TxunTxunGMA.iml" filepath="$PROJECT_DIR$/OwnProjects-TxunTxunGMA.iml" />
       <module fileurl="file://$PROJECT_DIR$/TxunTxunGMA.iml" filepath="$PROJECT_DIR$/TxunTxunGMA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/TxunTxunGMA-app.iml" filepath="$PROJECT_DIR$/app/TxunTxunGMA-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

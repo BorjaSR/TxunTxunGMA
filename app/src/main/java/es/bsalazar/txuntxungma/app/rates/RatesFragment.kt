@@ -15,6 +15,8 @@ import android.widget.EditText
 import es.bsalazar.txuntxungma.Injector
 import es.bsalazar.txuntxungma.R
 import es.bsalazar.txuntxungma.app.base.BaseFragment
+import es.bsalazar.txuntxungma.app.base.lists.BaseAdapter
+import es.bsalazar.txuntxungma.app.base.lists.BaseListFragment
 import es.bsalazar.txuntxungma.domain.entities.Auth
 import es.bsalazar.txuntxungma.domain.entities.Rate
 import es.bsalazar.txuntxungma.data.remote.FirebaseResponse
@@ -24,10 +26,9 @@ import es.bsalazar.txuntxungma.utils.Constants
 import es.bsalazar.txuntxungma.utils.ShowState
 import kotlinx.android.synthetic.main.fragment_rates.*
 
-class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
+class RatesFragment : BaseListFragment<Rate, RatesViewModel, RatesAdapter>(), RatesAdapter.OnEditRate {
 
     private var scheduleAnim = false
-    private var adapter: RatesAdapter? = null
     private var roleId: String = Auth.COMPONENT_ROLE
 
     override fun provideTag(): String = Constants.RATES_FRAGMENT
@@ -71,7 +72,6 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
         }
     }
 
-
     //region Menu
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         if (roleId.equals(Auth.CEO_ROLE))
@@ -94,6 +94,8 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
     }
     //endregion
 
+    override fun createAdapter() = RatesAdapter()
+
     override fun setupViewModel(): RatesViewModel =
             ViewModelProviders.of(this,
                     Injector.provideRatesViewModelFactory(mContext))
@@ -101,27 +103,21 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
 
 
     override fun observeViewModel() {
-        viewModel.ratesLiveData.nonNull().observe(this) { this.presentRatesList(it) }
         viewModel.authLiveData.nonNull().observe(this) { auth -> this.handleAuth(auth) }
         viewModel.loadingProgress.nonNull().observe(this) { showState -> this.handleLoading(showState) }
-
-        viewModel.addRateResponse.nonNull().observe(this) { addRateResponse -> addRate(addRateResponse) }
-        viewModel.updateRateResponse.nonNull().observe(this) { updateRateResponse -> modifyRate(updateRateResponse) }
-        viewModel.deleteRateResponse.nonNull().observe(this) { deleteRateResponse -> deleteRate(deleteRateResponse) }
     }
 
     private fun initRecycler() {
         rates_recycler.setHasFixedSize(true)
         rates_recycler.layoutManager = LinearLayoutManager(mContext)
-        adapter = RatesAdapter()
         rates_recycler.adapter = adapter
-        adapter?.onEditRate = this
+        adapter.onEditRate = this
     }
 
-    private fun presentRatesList(rates: List<Rate>) {
+    override fun setItems(list: List<Rate>) {
         if (scheduleAnim) rates_recycler.scheduleLayoutAnimation()
         scheduleAnim = false
-        adapter!!.setRates(rates)
+        super.setItems(list)
     }
 
     private fun handleLoading(showState: ShowState) {
@@ -146,16 +142,6 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
         }
         setHasOptionsMenu(true)
     }
-
-    fun addRate(response: FirebaseResponse<Rate>) =
-            adapter?.addRate(response.index, response.response)
-
-    fun modifyRate(response: FirebaseResponse<Rate>) =
-            adapter?.modifyRate(response.index, response.response)
-
-    fun deleteRate(response: FirebaseResponse<Rate>) =
-            adapter?.removeRate(response.index, response.response)
-
 
     override fun onEditRate(rate: Rate) {
         if (roleId.equals(Auth.CEO_ROLE))
@@ -214,12 +200,12 @@ class RatesFragment : BaseFragment<RatesViewModel>(), RatesAdapter.OnEditRate {
                 .setTitle(getString(R.string.remove_confirm_dialog_title))
                 .setMessage(getString(R.string.remove_confirm_dialog_message))
                 .setPositiveButton(getString(R.string.continue_text)) { _, _ ->
-                    adapter?.let {
+                    adapter.let {
                         viewModel.deleteRate(it.getItem(itemPosition))
                     }
                 }
                 .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                    adapter?.notifyItemChanged(itemPosition)
+                    adapter.notifyItemChanged(itemPosition)
                 }.create()
 
         alertDialog.setCancelable(false)

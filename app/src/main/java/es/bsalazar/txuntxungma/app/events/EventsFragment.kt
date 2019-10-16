@@ -39,7 +39,7 @@ class EventsFragment : BaseFragment<EventsViewModel>(), EventsAdapter.OnEditEven
     private var roleId = Auth.COMPONENT_ROLE
     private var notificationEventId = ""
 
-    override fun provideTag(): String = "EVENTS_FRAGMENT"
+    override fun provideTag() = "EVENTS_FRAGMENT"
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
