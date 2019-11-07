@@ -3,6 +3,12 @@ package es.bsalazar.txuntxungma.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import es.bsalazar.txuntxungma.domain.entities.Auth;
 
 public class PreferencesSource implements IPreferencesSource {
@@ -10,6 +16,7 @@ public class PreferencesSource implements IPreferencesSource {
     private final String LOGIN_DATA_KEY = "LOGIN_DATA_KEY";
     private final String ALARMS_KEY = "ALARM_KEY_";
     private final String ALARM_ID_KEY = "ALARM_ID_KEY";
+    private final String RELEASES_SIGNED_KEY = "ALARM_ID_KEY";
 
     private static PreferencesSource instance;
     private SharedPreferences sharedPreferences;
@@ -39,6 +46,19 @@ public class PreferencesSource implements IPreferencesSource {
     @Override
     public boolean removeLoginData() {
         return sharedPreferences.edit().remove(LOGIN_DATA_KEY).commit();
+    }
+
+    @Override
+    public boolean saveReleasesSigned(ArrayList<String> releases) {
+        return sharedPreferences.edit()
+                .putString(RELEASES_SIGNED_KEY, new Gson().toJson(releases))
+                .commit();
+    }
+
+    @Override
+    public ArrayList<String> getReleasesSigned() {
+        Type stringListType = new TypeToken<ArrayList<String>>(){}.getType();
+        return new Gson().fromJson(sharedPreferences.getString(RELEASES_SIGNED_KEY, new Gson().toJson(new ArrayList<String>())), stringListType);
     }
 
     @Override

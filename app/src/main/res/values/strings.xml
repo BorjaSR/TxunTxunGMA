@@ -58,8 +58,9 @@
   <string name="sign_up">!!Apúntate¡¡</string>
   <string name="msg_sign_up_release">Escribe tu nombre para apuntarte</string>
   <string name="action_sign_up">Apuntarme</string>
+    <string name="already_signed">Ya estas apuntado</string>
 
-  <string-array name="roles">
+    <string-array name="roles">
     <item>Componente</item>
     <item>Junta directiva</item>
   </string-array>

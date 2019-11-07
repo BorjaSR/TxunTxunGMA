@@ -111,7 +111,7 @@ public class DataProvider implements DataSource {
         firestoreManager.getEvents(new FirestoreSource.OnCollectionChangedListener<Event>() {
             @Override
             public void onCollectionChange(List<Event> collection) {
-                for(Event event : collection)
+                for (Event event : collection)
                     event.setAlarmActivated(getAlarmId(event.getId()) != -1);
 
                 callback.onCollectionChange(collection);
@@ -163,6 +163,7 @@ public class DataProvider implements DataSource {
     @Override
     public void updateRelease(Release release, FirestoreSource.OnDocumentSavedListener<Release> callback) {
         firestoreManager.updateRelease(release, callback);
+        setReleaseAsSignedByUser(release.getId());
     }
 
     @Override
@@ -197,5 +198,19 @@ public class DataProvider implements DataSource {
     @Override
     public void getEvent(String eventId, DataCallback<Event, BaseError> callback) {
         firestoreManager.getEvent(eventId, callback::onSuccess);
+    }
+
+    @Override
+    public void setReleaseAsSignedByUser(String releaseId) {
+        ArrayList<String> releasesSigned = preferencesSource.getReleasesSigned();
+        if (!isReleaseSignedByUser(releaseId)) {
+            releasesSigned.add(releaseId);
+            preferencesSource.saveReleasesSigned(releasesSigned);
+        }
+    }
+
+    @Override
+    public boolean isReleaseSignedByUser(String releaseId) {
+        return preferencesSource.getReleasesSigned().contains(releaseId);
     }
 }

@@ -1,5 +1,7 @@
 package es.bsalazar.txuntxungma.data.local;
 
+import java.util.ArrayList;
+
 import es.bsalazar.txuntxungma.domain.entities.Auth;
 
 public interface IPreferencesSource {
@@ -9,6 +11,10 @@ public interface IPreferencesSource {
     Auth getLoginData();
 
     boolean removeLoginData();
+
+    boolean saveReleasesSigned(ArrayList<String> releases);
+
+    ArrayList<String> getReleasesSigned();
 
     void saveAlarmId(String objectId, Integer alarmId);
 

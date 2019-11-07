@@ -7,6 +7,7 @@ import es.bsalazar.txuntxungma.data.remote.FirebaseResponse
 import es.bsalazar.txuntxungma.data.remote.FirestoreSource
 import es.bsalazar.txuntxungma.domain.entities.*
 import es.bsalazar.txuntxungma.utils.ShowState
+import java.util.ArrayList
 
 class ReleasesViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
 
@@ -30,12 +31,13 @@ class ReleasesViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         })
     }
 
-    fun getReleases(){
+    fun getReleases() {
         var init = true
         loadingProgress.value = ShowState.SHOW
-        dataSource.getReleases(object : FirestoreSource.OnCollectionChangedListener<Release>{
+        dataSource.getReleases(object : FirestoreSource.OnCollectionChangedListener<Release> {
             override fun onCollectionChange(collection: MutableList<Release>?) {
-                if(init){
+                if (init) {
+                    collection?.forEach { it.signedByUser = dataSource.isReleaseSignedByUser(it.id) }
                     releasesLiveData.value = collection
                     loadingProgress.value = ShowState.HIDE
                     init = false
@@ -43,15 +45,18 @@ class ReleasesViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
             }
 
             override fun onDocumentAdded(index: Int, document: Release) {
-                if(!init) addReleaseLiveData.value = FirebaseResponse(index, document)
+                document.signedByUser = dataSource.isReleaseSignedByUser(document.id)
+                if (!init) addReleaseLiveData.value = FirebaseResponse(index, document)
             }
 
             override fun onDocumentChanged(index: Int, document: Release) {
-                if(!init) modifyReleaseLiveData.value = FirebaseResponse(index, document)
+                document.signedByUser = dataSource.isReleaseSignedByUser(document.id)
+                if (!init) modifyReleaseLiveData.value = FirebaseResponse(index, document)
             }
 
             override fun onDocumentRemoved(index: Int, document: Release) {
-                if(!init) deleteReleaseLiveData.value = FirebaseResponse(index, document)
+                document.signedByUser = dataSource.isReleaseSignedByUser(document.id)
+                if (!init) deleteReleaseLiveData.value = FirebaseResponse(index, document)
             }
         })
     }

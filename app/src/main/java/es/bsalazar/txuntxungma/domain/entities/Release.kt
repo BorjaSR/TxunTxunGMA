@@ -13,6 +13,9 @@ class  Release : Serializable {
     var hasList: Boolean = false
     var componentList: ArrayList<String> = ArrayList()
 
+    //LOCAL
+    var signedByUser: Boolean = false
+
     constructor(id: String, document: DocumentSnapshot) {
         val release = document.toObject(this.javaClass)
         this.id = id
@@ -20,7 +23,7 @@ class  Release : Serializable {
         this.date = release.date
         this.title = release.title
         this.hasList = release.hasList
-        this.componentList = componentList
+        this.componentList = release.componentList
     }
 
     constructor(date: Long, name: String, description: String, hasList: Boolean = false, componentList: ArrayList<String> = ArrayList()) {

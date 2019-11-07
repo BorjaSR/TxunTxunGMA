@@ -109,9 +109,9 @@ class ReleasesFragment : BaseFragment<ReleasesViewModel>(), ReleasesAdapter.OnEd
                     .get(ReleasesViewModel::class.java)
 
     override fun observeViewModel() {
-        viewModel.authLiveData.nonNull().observe(this) { auth -> this.handleAuth(auth) }
-        viewModel.releasesLiveData.nonNull().observe(this) { releasesList -> this.presentReleases(releasesList) }
-        viewModel.loadingProgress.nonNull().observe(this) { showState -> this.handleLoading(showState) }
+        viewModel.authLiveData.nonNull().observe(this, ::handleAuth)
+        viewModel.releasesLiveData.nonNull().observe(this, ::presentReleases)
+        viewModel.loadingProgress.nonNull().observe(this, ::handleLoading)
 
         viewModel.addReleaseLiveData.nonNull().observe(this) { addReleaseResponse -> addRelease(addReleaseResponse) }
         viewModel.modifyReleaseLiveData.nonNull().observe(this) { updateReleaseResponse -> modifyRelease(updateReleaseResponse) }
@@ -183,11 +183,10 @@ class ReleasesFragment : BaseFragment<ReleasesViewModel>(), ReleasesAdapter.OnEd
                 .setMessage(getString(R.string.msg_sign_up_release))
                 .setView(layout)
                 .setPositiveButton(getString(R.string.action_sign_up)) { _, _ ->
-
+                    release.componentList.add(editText.text.toString())
+                    viewModel.modifyRelease(release)
                 }
-                .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                    //NOTHING TO DO
-                }
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
 
         layout.findViewById<EditText>(R.id.edit_text).requestFocus()

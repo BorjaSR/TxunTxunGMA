@@ -61,4 +61,8 @@ public interface DataSource {
     Integer getAndIncrementAlarmId();
 
     void getEvent(String eventId, DataCallback<Event, BaseError> callback);
+
+    void setReleaseAsSignedByUser(String releaseId);
+
+    boolean isReleaseSignedByUser(String releaseId);
 }
