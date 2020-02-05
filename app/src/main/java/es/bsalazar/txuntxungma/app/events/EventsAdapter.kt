@@ -196,7 +196,7 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
     class MyTimer(val index: Int, val event: Event, val function: (Int, Event) -> (Unit)) : Thread() {
 
         override fun run() {
-            Thread.sleep(500)
+            sleep(500)
             function(index, event)
         }
     }

@@ -13,10 +13,10 @@ import es.bsalazar.txuntxungma.domain.entities.Auth;
 
 public class PreferencesSource implements IPreferencesSource {
 
-    private final String LOGIN_DATA_KEY = "LOGIN_DATA_KEY";
-    private final String ALARMS_KEY = "ALARM_KEY_";
-    private final String ALARM_ID_KEY = "ALARM_ID_KEY";
-    private final String RELEASES_SIGNED_KEY = "ALARM_ID_KEY";
+    private static final String LOGIN_DATA_KEY = "LOGIN_DATA_KEY";
+    private static final String ALARMS_KEY = "ALARM_KEY_";
+    private static final String ALARM_ID_KEY = "ALARM_ID_KEY";
+    private static final String RELEASES_SIGNED_KEY = "RELEASES_SIGNED_KEY";
 
     private static PreferencesSource instance;
     private SharedPreferences sharedPreferences;

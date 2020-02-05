@@ -1,0 +1,19 @@
+
+…squid:UselessImportCheck"ZRemove this unused import 'es.bsalazar.txuntxungma.domain.entities.ReleaseComponentsList'.(•œ½©8™”¹¬ï-
+osquid:S3776…"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(ÑŠþÝüÿÿÿÿ
+csquid:CommentedOutCodeLine†"<This block of commented-out lines of code should be removed.(ç‘çË
+tsquid:S1192é"WDefine a constant instead of duplicating this literal "Error writing document" 4 times.(œª™¯ÿÿÿÿÿ
+nsquid:S3776G"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(ñü²þüÿÿÿÿ
+ksquid:S00116"NRename this field "TAG" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÊŒ·äûÿÿÿÿ
+csquid:CommentedOutCodeLine™"<This block of commented-out lines of code should be removed.(Åà†‘
+]squid:S1068 "FRemove this unused "RELEASE_COMPONENTS_LIST_COLLECTION" private field.(í÷§µ
+~squid:S1192Î"gDefine a constant instead of duplicating this literal "DocumentSnapshot successfully deleted!" 4 times.(Ê™òy
+ksquid:S1192L"ODefine a constant instead of duplicating this literal "Listen failed." 4 times.(­öŸçøÿÿÿÿ
+isquid:UselessImportCheck"?Remove this unused import 'android.support.annotation.NonNull'.(¼Åß8‘¹¸¬ï-
+=squid:S1170"!Make this final field static too.(ÊŒ·äûÿÿÿÿ
+isquid:S3776f"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.( Ð‹‰
+xsquid:UselessImportCheck
+"HRemove this unused import 'com.google.firebase.firestore.QuerySnapshot'.(Ä¡Þ©ýÿÿÿÿ8­Ú¯¬ï-
+jsquid:S3776©"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¬‰šá
+hsquid:CommentedOutCodeLine—"<This block of commented-out lines of code should be removed.(¯¢Ôìþÿÿÿÿ
+psquid:S1192Ï"XDefine a constant instead of duplicating this literal "Error deleting document" 4 times.(ŠÏõÜ

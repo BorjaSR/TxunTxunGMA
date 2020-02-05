@@ -1,0 +1,25 @@
+
+{
+Kapp/src/main/java/es/bsalazar/txuntxungma/data/local/PreferencesSource.java,4\b\4b165635d55acdb2399ac215aef54c5b8033b099
+g
+7app/src/main/java/es/bsalazar/txuntxungma/Extensions.kt,c\5\c58c9bdf4706057b598962f818c00b9b59eb70d7
+t
+Dapp/src/main/java/es/bsalazar/txuntxungma/domain/entities/Release.kt,3\b\3ba910a0fec80342ccc7dc892ac2ba4b823204bb
+z
+Japp/src/main/java/es/bsalazar/txuntxungma/app/releases/ReleasesFragment.kt,2\9\29207a23f91d55ec13a326a4e21e1f2d9d69184c
+y
+Iapp/src/main/java/es/bsalazar/txuntxungma/app/releases/ReleasesAdapter.kt,8\a\8a414db6ca92fb9fe96e0cfa5b37976b1081710d
+{
+Kapp/src/main/java/es/bsalazar/txuntxungma/app/releases/ReleasesViewModel.kt,e\f\eff82049daec2c67bb6bd0a831a029fedf112303
+n
+>app/src/main/java/es/bsalazar/txuntxungma/data/DataSource.java,4\e\4e74fb9f3ba2a4b252510c2f82478770f8cde20c
+p
+@app/src/main/java/es/bsalazar/txuntxungma/data/DataProvider.java,2\2\22c1f5cf9cf99f451b3ca0e293d47a39abd87c01
+z
+Japp/src/main/java/es/bsalazar/txuntxungma/data/remote/FirestoreSource.java,a\4\a48be0edc4a6f4aafb734d2895411d185a8a8819
+{
+Kapp/src/main/java/es/bsalazar/txuntxungma/data/remote/IFirestoreSource.java,1\5\15ef2a7418c47ac9b1e43bb3cbee71641a25d51a
+†
+Vapp/src/main/java/es/bsalazar/txuntxungma/app/releases/detail/ReleaseDetailActivity.kt,a\7\a79a2e6acc9697fc2a903bb700ab718cd0cbe9d7
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e

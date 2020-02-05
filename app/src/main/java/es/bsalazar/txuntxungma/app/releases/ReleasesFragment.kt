@@ -19,16 +19,13 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
-import es.bsalazar.txuntxungma.R
-import es.bsalazar.txuntxungma.Injector
+import es.bsalazar.txuntxungma.*
 import es.bsalazar.txuntxungma.app.MainActivity
 import es.bsalazar.txuntxungma.app.base.BaseFragment
 import es.bsalazar.txuntxungma.app.releases.detail.ReleaseDetailActivity
 import es.bsalazar.txuntxungma.data.remote.FirebaseResponse
 import es.bsalazar.txuntxungma.domain.entities.Auth
 import es.bsalazar.txuntxungma.domain.entities.Release
-import es.bsalazar.txuntxungma.nonNull
-import es.bsalazar.txuntxungma.observe
 import es.bsalazar.txuntxungma.utils.Constants
 import es.bsalazar.txuntxungma.utils.ShowState
 import kotlinx.android.synthetic.main.fragment_releases.*

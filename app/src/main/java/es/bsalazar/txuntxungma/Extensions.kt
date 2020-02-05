@@ -16,10 +16,9 @@ fun <T> NonNullMediatorLiveData<T>.observe(owner: LifecycleOwner, observer: (t: 
     })
 }
 
-fun String.firstUpperCase() : String =
+fun String.firstUpperCase() =
         when(length){
             0 -> this
             1 -> toUpperCase()
             else -> substring(0,1).toUpperCase() + substring(1)
         }
-

@@ -1,0 +1,9 @@
+
+=squid:S1170"!Make this final field static too.(ÿÉœÊúÿÿÿÿ
+8squid:S1170"!Make this final field static too.(¤‡à 
+8squid:S1170"!Make this final field static too.(Øé¡¥
+=squid:S1170"!Make this final field static too.(­“ÇÂúÿÿÿÿ
+vsquid:S00116"YRename this field "LOGIN_DATA_KEY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿÉœÊúÿÿÿÿ
+msquid:S00116"URename this field "ALARMS_KEY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤‡à 
+osquid:S00116"WRename this field "ALARM_ID_KEY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Øé¡¥
+{squid:S00116"^Rename this field "RELEASES_SIGNED_KEY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(­“ÇÂúÿÿÿÿ

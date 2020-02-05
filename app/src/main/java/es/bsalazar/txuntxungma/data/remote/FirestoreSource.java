@@ -196,26 +196,6 @@ public class FirestoreSource implements IFirestoreSource {
                 });
     }
 
-//    @Override
-//    public void getReleaseComponentList(String releaseId, OnDocumentLoadedListener<ReleaseComponentsList> callback) {
-//
-//        db.collection(RELEASE_COMPONENTS_LIST_COLLECTION)
-//                .whereEqualTo("releaseId", releaseId)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot query = task.getResult();
-//                        if (query.getDocuments().size() == 1){
-//                            callback.onDocumentLoaded(new ReleaseComponentsList(releaseId, query.getDocuments().get(0)));
-//                        } else {
-//                            callback.onDocumentLoaded(null);
-//                        }
-//                    } else {
-//                        callback.onDocumentLoaded(null);
-//                    }
-//                });
-//    }
-
     @Override
     public void getEvent(String eventId, OnDocumentLoadedListener<Event> callback) {
         db.collection(EVENTS_COLLECTION)
@@ -301,26 +281,9 @@ public class FirestoreSource implements IFirestoreSource {
                     Log.w(TAG, "Error writing document", e);
                 });
     }
-
-//    @Override
-//    public void saveReleaseComponentList(ReleaseComponentsList releaseComponentsList, OnDocumentSavedListener<ReleaseComponentsList> listener) {
-//        Map<String, Object> releaseMap = releaseComponentsList.getMap();
-//
-//        db.collection(RELEASE_COMPONENTS_LIST_COLLECTION)
-//                .add(releaseMap)
-//                .addOnSuccessListener(documentReference -> {
-//                    releaseComponentsList.setId(documentReference.getId());
-//                    listener.onDocumentSaved(releaseComponentsList);
-//                })
-//                .addOnFailureListener(e -> {
-//                    listener.onDocumentSaved(null);
-//                    Log.w(TAG, "Error writing document", e);
-//                });
-//    }
     //endregion
 
     //region UPDATE
-
     @Override
     public void updateComponent(Component component, OnDocumentSavedListener<Component> listener) {
         Map<String, Object> componentMap = component.getMap();
@@ -360,18 +323,6 @@ public class FirestoreSource implements IFirestoreSource {
                 .addOnSuccessListener(aVoid -> listener.onDocumentSaved(release))
                 .addOnFailureListener(e -> listener.onDocumentSaved(null));
     }
-
-//    @Override
-//    public void updateReleaseComponentList(ReleaseComponentsList releaseComponentsList, OnDocumentSavedListener<ReleaseComponentsList> listener) {
-//
-//        Map<String, Object> releaseComponentsListMap = releaseComponentsList.getMap();
-//
-//        db.collection(RELEASE_COMPONENTS_LIST_COLLECTION).document(Objects.requireNonNull(releaseComponentsList.getId()))
-//                .set(releaseComponentsListMap)
-//                .addOnSuccessListener(aVoid -> listener.onDocumentSaved(releaseComponentsList))
-//                .addOnFailureListener(e -> listener.onDocumentSaved(null));
-//    }
-
     //endregion
 
     //region DELETE
